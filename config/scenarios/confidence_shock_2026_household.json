@@ -1,0 +1,30 @@
+{
+  "confidence_premium_basis_points": 500,
+  "end": "2036Q3",
+  "experiment": "2026Q4 confidence shock with wage-tax-only fiscal closure",
+  "inflation": "unchanged baseline",
+  "model_version": "0.2",
+  "passing_the_buck_scenario": {
+    "confidence_premium_basis_points": 500,
+    "end": "2056Q3",
+    "financing_rule": "every modeled primary deficit, cash interest cost, and maturing principal is financed through the existing Treasury cohort engine",
+    "interpretation_of_indefinitely": "through the final supported CBO quarter; no extrapolation beyond 2056Q3",
+    "premium_duration_quarters": 120,
+    "primary_deficits": "unchanged CBO long-term path",
+    "terminal_immediate_flow_diagnostic": {
+      "required_primary_balance_improvement_gdp_share": 0.3287527614812981,
+      "required_primary_deficit_gdp_share": -0.30573951028340995
+    }
+  },
+  "premium_duration_quarters": 40,
+  "primary_deficits": "unchanged nominal baseline before solved adjustment",
+  "recession": {
+    "first_four_quarters_real_growth_annualized": -0.02,
+    "next_four_quarters_real_growth_annualized": 0.0,
+    "thereafter": "baseline without level catch-up"
+  },
+  "selected_closure": "permanent employee-side surcharge on all wages and salaries",
+  "start": "2026Q4",
+  "tax_translation": "static required primary-balance improvement divided by the CBO 2026-2036 wages-and-salaries share; no behavioral or incidence adjustment",
+  "wages_and_salaries_gdp_share": 0.42
+}

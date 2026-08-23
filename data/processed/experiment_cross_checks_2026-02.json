@@ -1,0 +1,77 @@
+{
+  "baseline_repricing": {
+    "2025Q4": 0.2159123202980333,
+    "2026Q3": 0.3779019415086418,
+    "2027Q3": 0.5098289514958444,
+    "2030Q3": 0.7565086919129799,
+    "2035Q3": 0.8959750021485873,
+    "2036Q3": 0.9019160983544977
+  },
+  "immediate_rate_response_interest_changes_billions": {
+    "2027Q1": {
+      "bills_interest_cost_billions": 0.0,
+      "bonds_interest_cost_billions": 0.0,
+      "frns_interest_cost_billions": 9.308767910228234,
+      "notes_interest_cost_billions": 0.0,
+      "tips_inflation_compensation_billions": 0.0
+    },
+    "2027Q2": {
+      "bills_interest_cost_billions": 87.52964956754595,
+      "bonds_interest_cost_billions": 1.1621673251602331,
+      "frns_interest_cost_billions": 9.448646341183828,
+      "notes_interest_cost_billions": 12.364871873216856,
+      "tips_inflation_compensation_billions": 42.63940382011884
+    },
+    "2027Q4": {
+      "bills_interest_cost_billions": 91.16898448170147,
+      "bonds_interest_cost_billions": 4.304072973681357,
+      "frns_interest_cost_billions": 9.842804869753397,
+      "notes_interest_cost_billions": 40.879846889456445,
+      "tips_inflation_compensation_billions": 47.443718969102946
+    },
+    "2028Q4": {
+      "bills_interest_cost_billions": 1.207565555282784,
+      "bonds_interest_cost_billions": 6.818335420888964,
+      "frns_interest_cost_billions": 0.13420778455553517,
+      "notes_interest_cost_billions": 54.79723945570706,
+      "tips_inflation_compensation_billions": 1.3558273270842225
+    }
+  },
+  "primary_deficit_mode": {
+    "annual_nominal_billions": {
+      "2027Q4": {
+        "debt_gdp_difference_pp": -6.785693744645127,
+        "nominal_debt_difference_billions": 135.54251833216404
+      },
+      "2036Q3": {
+        "debt_gdp_difference_pp": -7.901099157391012,
+        "nominal_debt_difference_billions": 256.1451680929749
+      }
+    },
+    "matched_initial_annual_primary_deficit_billions": 828.6805050787997,
+    "percent_gdp": {
+      "2027Q4": {
+        "debt_gdp_difference_pp": -6.679430154831345,
+        "nominal_debt_difference_billions": 175.55244604412292
+      },
+      "2036Q3": {
+        "debt_gdp_difference_pp": -6.506998709893241,
+        "nominal_debt_difference_billions": 1108.0934434557275
+      }
+    }
+  },
+  "tips_counterfactual": {
+    "2027Q4": {
+      "with_tips_debt_gdp_difference_pp": -6.779906130572721,
+      "with_tips_nominal_debt_difference_billions": 135.44558162637986,
+      "without_tips_debt_gdp_difference_pp": -7.123026601902016,
+      "without_tips_nominal_debt_difference_billions": 0.0
+    },
+    "2036Q3": {
+      "with_tips_debt_gdp_difference_pp": -7.888166734931201,
+      "with_tips_nominal_debt_difference_billions": 255.95150374088553,
+      "without_tips_debt_gdp_difference_pp": -8.344326985568085,
+      "without_tips_nominal_debt_difference_billions": 0.0
+    }
+  }
+}

@@ -1,0 +1,7 @@
+reference_debt_gdp_ratio,closure_start,closure_end,target_definition,post_event_yield_shock_basis_points,status,haircut_fraction,face_value_reduction_billions,terminal_debt_gdp_ratio
+1.2,2037Q2,2047Q1,endpoint no higher than starting ratio,0.0,solved,0.19603440492947619,11262.280162902434,1.203106430390853
+1.2,2037Q2,2047Q1,endpoint no higher than starting ratio,500.0,solved,0.45384945233162666,26073.890885517994,1.2031064303908527
+1.4,2045Q4,2055Q3,endpoint no higher than starting ratio,0.0,solved,0.19906992637109366,18313.880651711217,1.403814585312968
+1.4,2045Q4,2055Q3,endpoint no higher than starting ratio,500.0,solved,0.45842905041342896,42174.20013959448,1.4038145853129684
+1.6,2052Q4,2056Q3,endpoint no higher than starting ratio,0.0,solved,0.07700637824833019,10366.14833546451,1.602041659604006
+1.6,2052Q4,2056Q3,endpoint no higher than starting ratio,500.0,solved,0.1547017163310729,20825.04041505975,1.602041659604006

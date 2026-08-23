@@ -1,0 +1,121 @@
+{
+  "cbo_report_release_date": "2026-02-11",
+  "cbo_vintage": "2026-02",
+  "model_data_release": "v0.1",
+  "processed_files": {
+    "cbo_baseline_fy_2026-02.csv": {
+      "sha256": "8b39c42d056a52f17659531e35deb3741578bb0adb645f919e52bc8ffbee8ea4"
+    },
+    "cbo_economy_quarterly_2026-02.csv": {
+      "sha256": "15a530f05879bbfeaac1839fd79fec73ffece7dd7823907f545f7406c3c321fa"
+    },
+    "initial_conditions_2025-09-30.csv": {
+      "sha256": "8a7d3da2a3b87260a7c5424167efb39f834a369334b5e6c22eb135ec94db9b7e"
+    },
+    "treasury_securities_2025-09-30.csv": {
+      "sha256": "f800fbe2812bb2b2e052f8c1b21836956fd175d905b1e792aeebc5a38074b4c0"
+    }
+  },
+  "retrieval_date": "2026-08-22",
+  "retrieved_at_utc": "2026-08-22T18:37:21.724169+00:00",
+  "sources": {
+    "cbo_budget_schema": {
+      "http_headers": {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Date": "Sat, 22 Aug 2026 18:37:20 GMT",
+        "ETag": "W/\"c7f2c63f09e8364816b9f6b19862ebfacde219d0ecdb2cdf5b9f230dea383f5b\""
+      },
+      "institution": "Congressional Budget Office",
+      "query_parameters": null,
+      "raw_snapshot": "data/raw/2026-08-22/cbo_ten_year_budget_schema.json",
+      "sha256": "c352efc028e4136ada521a90ffdc45ac74f9da6f0cb603546a218d79152b5bb3",
+      "url": "https://raw.githubusercontent.com/US-CBO/cbo-data/main/data/budget/ten_year_budget/schema.json"
+    },
+    "cbo_economy_schema": {
+      "http_headers": {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Date": "Sat, 22 Aug 2026 18:37:20 GMT",
+        "ETag": "W/\"34bd99f2de0a02f294feae8e64f145029bbebb095a7aa2471eb2590e182fc3bc\""
+      },
+      "institution": "Congressional Budget Office",
+      "query_parameters": null,
+      "raw_snapshot": "data/raw/2026-08-22/cbo_economic_projections_schema.json",
+      "sha256": "87bef053e25289001d152b396307fdc49b3c5eb81cc7913190823ef199d16a51",
+      "url": "https://raw.githubusercontent.com/US-CBO/cbo-data/main/data/economic/economic_projections/schema.json"
+    },
+    "cbo_quarterly_economy": {
+      "http_headers": {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Date": "Sat, 22 Aug 2026 18:37:19 GMT",
+        "ETag": "W/\"860dc8f4cfbda1c5dd59365995962d5807426fbe48d4e5667ae2f5107b70c362\""
+      },
+      "institution": "Congressional Budget Office",
+      "query_parameters": null,
+      "raw_snapshot": "data/raw/2026-08-22/cbo_quarterly_economy_2026-02.csv",
+      "sha256": "eda9f9eb6607461621504a973ff7609ef627ccfd02d8096219843efccf55ca7f",
+      "url": "https://raw.githubusercontent.com/US-CBO/cbo-data/main/data/economic/economic_projections/quarterly_2026-02.csv"
+    },
+    "cbo_ten_year_budget": {
+      "http_headers": {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Date": "Sat, 22 Aug 2026 18:37:19 GMT",
+        "ETag": "W/\"188f361004a236e10d0362599f0d627fe0f407541c0eb544b630152c064b79bc\""
+      },
+      "institution": "Congressional Budget Office",
+      "query_parameters": null,
+      "raw_snapshot": "data/raw/2026-08-22/cbo_ten_year_budget_2026-02.csv",
+      "sha256": "6a2d727e70fb53512e45afdcc8d145f7dc952b2d4e87ca03591cb4e5bd63f0db",
+      "url": "https://raw.githubusercontent.com/US-CBO/cbo-data/main/data/budget/ten_year_budget/annual_fy_2026-02.csv"
+    },
+    "treasury_frn_auctions": {
+      "http_headers": {
+        "Content-Type": "application/json",
+        "Date": "Sat, 22 Aug 2026 18:37:21 GMT"
+      },
+      "institution": "U.S. Treasury, Bureau of the Fiscal Service",
+      "query_parameters": {
+        "filter": "floating_rate:eq:Yes,issue_date:lte:2025-09-30",
+        "page[size]": 5000
+      },
+      "raw_snapshot": "data/raw/2026-08-22/treasury_frn_auctions_through_2025-09-30.json",
+      "sha256": "8d0c2e6bba250a2ea8a72d7a8bf23aabb1346428ff1cf03a899279c7d8a667e2",
+      "url": "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/auctions_query"
+    },
+    "treasury_mspd_securities": {
+      "http_headers": {
+        "Content-Type": "application/json",
+        "Date": "Sat, 22 Aug 2026 18:37:20 GMT"
+      },
+      "institution": "U.S. Treasury, Bureau of the Fiscal Service",
+      "query_parameters": {
+        "filter": "record_date:eq:2025-09-30",
+        "page[size]": 5000
+      },
+      "raw_snapshot": "data/raw/2026-08-22/treasury_mspd_securities_2025-09-30.json",
+      "sha256": "7acab7674c5821014074dd6ee31c53c2e556032d76e832be2fa35a458d809d69",
+      "url": "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/debt/mspd/mspd_table_3_market"
+    },
+    "treasury_mspd_summary": {
+      "http_headers": {
+        "Content-Type": "application/json",
+        "Date": "Sat, 22 Aug 2026 18:37:20 GMT"
+      },
+      "institution": "U.S. Treasury, Bureau of the Fiscal Service",
+      "query_parameters": {
+        "filter": "record_date:eq:2025-09-30",
+        "page[size]": 5000
+      },
+      "raw_snapshot": "data/raw/2026-08-22/treasury_mspd_table1_2025-09-30.json",
+      "sha256": "c4ba68e29cd8507584fac53bff8a856ea5cd6c82d2ad6b8ad951ab29d32948f3",
+      "url": "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/debt/mspd/mspd_table_1"
+    }
+  },
+  "transformations": [
+    "CBO deficit signs converted to positive borrowing requirements.",
+    "CBO percentage rates converted to decimal rates.",
+    "MSPD security subtotals excluded by selecting nine-character 912 CUSIPs.",
+    "Security-level principal scaled by instrument class to MSPD debt-held-by-public totals.",
+    "Debt held by the public outside detailed marketable cohorts retained as other_public_debt."
+  ],
+  "treasury_observation_date": "2025-09-30"
+}

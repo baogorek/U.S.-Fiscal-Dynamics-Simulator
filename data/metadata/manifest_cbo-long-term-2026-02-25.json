@@ -1,0 +1,61 @@
+{
+  "cbo_long_term_release": "2026-02-25",
+  "cbo_report_release_date": "2026-02-25",
+  "cbo_ten_year_baseline_release_date": "2026-02-11",
+  "model_data_release": "v0.2",
+  "processed_files": {
+    "cbo_long_term_budget_fy_2026-02-25.csv": {
+      "sha256": "6253b9c71bb614cc7b437a20c8d2ed011e101104959e766782476f89ff23ce8d"
+    },
+    "cbo_long_term_economy_annual_2026-02-25.csv": {
+      "sha256": "86b6b0ea97450db1e6cedff4f3fca5fd34120d7f9296510a5d547f1052947034"
+    }
+  },
+  "retrieval_date": "2026-08-22",
+  "retrieved_at_utc": "2026-08-22T21:19:05.246325+00:00",
+  "sources": {
+    "cbo_long_term_budget": {
+      "http_headers": {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Date": "Sat, 22 Aug 2026 21:19:05 GMT",
+        "ETag": "W/\"a7b6cbd97db5f9f9f6932b8d4b3cefd39b91b887bb6d60cabfa83146ed4bac32\""
+      },
+      "institution": "Congressional Budget Office",
+      "query_parameters": null,
+      "raw_snapshot": "data/raw/2026-08-22/cbo_long_term_budget_2026-02-25.csv",
+      "sha256": "61018d3f4334c26a1704438e28c3b523b641c45549c8bf04c3890fd463f7a5f5",
+      "url": "https://raw.githubusercontent.com/US-CBO/cbo-data/main/data/budget/long_term_budget/annual_fy_2026-02.csv"
+    },
+    "cbo_long_term_economic_levels": {
+      "http_headers": {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Date": "Sat, 22 Aug 2026 21:19:05 GMT",
+        "ETag": "W/\"16ed86eeaf96f3d43710f16caa4cf8962b7eaf10b9eb1a91ccac2882bb946216\""
+      },
+      "institution": "Congressional Budget Office",
+      "query_parameters": null,
+      "raw_snapshot": "data/raw/2026-08-22/cbo_long_term_economic_levels_2026-02-25.csv",
+      "sha256": "94f7ccc10117dd72407129b1a33e903ff0e9c0b8c78d81639dc53261ff7205fe",
+      "url": "https://raw.githubusercontent.com/US-CBO/cbo-data/main/data/economic/long_term_economic/levels_2026-02.csv"
+    },
+    "cbo_long_term_economic_rates": {
+      "http_headers": {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Date": "Sat, 22 Aug 2026 21:19:05 GMT",
+        "ETag": "W/\"4a1c46e4f327f0d3a74a2a8d562e786d5cae36195d76db6de1b46d15258c2759\""
+      },
+      "institution": "Congressional Budget Office",
+      "query_parameters": null,
+      "raw_snapshot": "data/raw/2026-08-22/cbo_long_term_economic_rates_2026-02-25.csv",
+      "sha256": "780988645288d40dbb7d4e595f058f89b971cea86c60021be93f35c5257e92f8",
+      "url": "https://raw.githubusercontent.com/US-CBO/cbo-data/main/data/economic/long_term_economic/rates_2026-02.csv"
+    }
+  },
+  "transformations": [
+    "CBO long-term deficit shares converted from negative percentages to positive borrowing requirements in billions using CBO's fiscal-year GDP series.",
+    "Annual long-term economic level indexes rescaled from 1.0 to 100.",
+    "Annual percentage rates converted to decimal rates.",
+    "Quarterly interpolation is performed at scenario-build time using a constant within-year compound rate calibrated to each CBO annual mean.",
+    "No intra-year volatility is added."
+  ]
+}

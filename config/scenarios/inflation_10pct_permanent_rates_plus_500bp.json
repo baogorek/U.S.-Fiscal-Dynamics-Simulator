@@ -1,0 +1,20 @@
+{
+  "cbo_vintage": "2026-02",
+  "description": "User-imposed deterministic paths; no behavioral response is inferred.",
+  "end_period": "2036Q3",
+  "imposed_parameters": {
+    "inflation_rate": 0.1,
+    "intermediate_rate_shock_basis_points": 500.0,
+    "long_rate_shock_basis_points": 500.0,
+    "rate_response_lag_quarters": 0,
+    "rate_shock_duration_quarters": 39,
+    "real_growth_adjustment_percentage_points": 0.0,
+    "shock_duration_quarters": 4,
+    "shock_start": "2027Q1",
+    "short_rate_shock_basis_points": 500.0,
+    "tips_real_rate_shock_basis_points": 500.0
+  },
+  "scenario_name": "inflation_10pct_permanent_rates_plus_500bp",
+  "start_period": "2025Q4",
+  "treasury_observation_date": "2025-09-30"
+}

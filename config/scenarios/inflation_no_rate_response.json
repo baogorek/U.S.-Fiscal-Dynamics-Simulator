@@ -1,0 +1,17 @@
+{
+  "cbo_vintage": "2026-02",
+  "description": "Temporary 10% inflation with real growth, primary deficits, and Treasury issuance rates otherwise unchanged.",
+  "end_period": "2036Q3",
+  "imposed_parameters": {
+    "inflation_duration_quarters": 4,
+    "inflation_rate": 0.1,
+    "inflation_shock_start": "2027Q1",
+    "primary_deficit_behavior": "unchanged nominal CBO fiscal-year path",
+    "rate_response_lag_quarters": 0,
+    "rate_shock_basis_points": 0.0,
+    "real_gdp_growth_behavior": "unchanged CBO quarterly path"
+  },
+  "scenario_name": "inflation_no_rate_response",
+  "start_period": "2025Q4",
+  "treasury_observation_date": "2025-09-30"
+}

@@ -1,0 +1,15 @@
+{
+  "cbo_vintage": "2026-02",
+  "description": "February 2026 CBO macro, primary-deficit, rate, and financing paths, with documented issuance approximations.",
+  "end_period": "2036Q3",
+  "imposed_parameters": {
+    "cbo_vintage": "2026-02",
+    "fiscal_to_quarterly_conversion": "equal nominal quarters",
+    "new_frn_spread": 0.001,
+    "tips_real_issuance_rate": 0.0175,
+    "treasury_observation_date": "2025-09-30"
+  },
+  "scenario_name": "baseline",
+  "start_period": "2025Q4",
+  "treasury_observation_date": "2025-09-30"
+}

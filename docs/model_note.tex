@@ -1,0 +1,300 @@
+\documentclass[10pt]{article}
+
+\usepackage[margin=0.8in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.4em}
+
+\title{A Transparent Quarterly Model of U.S. Fiscal Dynamics\\
+\large Accounting, Treasury Refinancing, and Inflation}
+\author{U.S. Fiscal Dynamics Simulator, version 0.1}
+\date{August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This note describes a deterministic model of U.S. federal debt dynamics.  The model is
+designed to answer accounting questions before attempting to model political or
+macroeconomic behavior.  Its central feature is a security-level representation of
+marketable Treasury debt: fixed-rate securities retain their rates until maturity, bills
+roll over quickly, floating-rate notes reset, and Treasury Inflation-Protected Securities
+(TIPS) have inflation-indexed principal.  Inflation, real growth, primary deficits, and
+new-issuance rates are independent assumptions.  The resulting model is intentionally
+simple, but each result can be traced to an equation, an observed Treasury security, a CBO
+projection, or a stated approximation.
+\end{abstract}
+
+\section{Introduction}
+
+A familiar fiscal projection shows federal debt relative to gross domestic product (GDP)
+rising for many years.  Such a projection does not by itself explain how the debt stock
+would respond to a sudden change in inflation or interest rates.  Two details are
+especially important.  First, unexpected inflation can raise nominal GDP immediately,
+lowering the debt-to-GDP ratio even if no nominal debt disappears.  Second, most Treasury
+debt does not instantly reprice: higher market rates enter federal interest costs gradually
+as securities mature, are refinanced, or reset.
+
+Version 0.1 of the U.S. Fiscal Dynamics Simulator isolates those mechanisms.  It is not a
+forecast, a general-equilibrium model, or a model of fiscal crisis.  Congress, the Federal
+Reserve, and investors do not react endogenously.  Instead, the user specifies paths for
+inflation, real growth, the primary deficit, other financing, and issuance rates.  The
+model then calculates the implied GDP, interest costs, borrowing, refinancing, and debt
+stock.
+
+The benchmark is the Congressional Budget Office's (CBO's) February 2026 baseline
+projection for 2026--2036 \cite{cbo2026outlook}.  The starting Treasury portfolio is the
+September 30, 2025 Monthly Statement of the Public Debt (MSPD) \cite{mspd}.
+
+\section{Time, notation, and GDP}
+
+The simulation step is one calendar quarter.  A federal fiscal year contains the December
+quarter of the preceding calendar year and the March, June, and September quarters of the
+named fiscal year.  CBO budget flows are fiscal-year quantities and are allocated equally
+across those four quarters.  CBO quarterly economic data retain their calendar-quarter
+timing.
+
+Let $Y_t$ denote nominal GDP at a seasonally adjusted annual rate, $g_t$ annualized real GDP
+growth, and $\pi_t$ annualized GDP-price inflation.  Annual rates are converted to effective
+quarterly rates:
+\begin{equation}
+ g^q_t=(1+g_t)^{1/4}-1,
+ \qquad
+ \pi^q_t=(1+\pi_t)^{1/4}-1.
+\end{equation}
+Nominal GDP evolves according to
+\begin{equation}
+ Y_t=Y_{t-1}(1+g^q_t)(1+\pi^q_t).
+ \label{eq:gdp}
+\end{equation}
+This formulation makes inflation and real growth separate, visible assumptions.  The model
+does not infer an effect of inflation on real output.
+
+\section{Fiscal and debt accounting}
+
+Let $P_t$ be the primary deficit, with a positive value denoting a deficit and a negative
+value denoting a surplus.  Let $I_t$ be modeled debt interest and $F_t$ the explicitly
+reported ``other financing adjustment.''  The modeled total deficit is
+\begin{equation}
+ G_t=P_t+I_t,
+ \end{equation}
+and debt held by the public, $D_t$, satisfies
+\begin{equation}
+ D_t=D_{t-1}+G_t+F_t.
+ \label{eq:debtidentity}
+\end{equation}
+The term $F_t$ matters because changes in debt held by the public need not equal the unified
+budget deficit.  Treasury cash-balance changes and federal credit-program cash flows are
+examples of other means of financing \cite{cbo2026outlook}.  No hidden residual is used to
+force equation~\eqref{eq:debtidentity} to match a target series.
+
+The treatment of TIPS makes it useful to distinguish interest expense from immediate cash
+borrowing.  Write
+\begin{equation}
+ I_t=C_t+I^O_t+X_t+L_t,
+\end{equation}
+where $C_t$ is marketable interest excluding TIPS principal indexation, $I^O_t$ is the
+approximated interest cost of other public debt, $X_t$ is TIPS inflation compensation, and
+$L_t$ is any TIPS maturity-floor cost.  TIPS indexation raises principal directly.  Thus the
+signed cash financing requirement is
+\begin{equation}
+ B_t=P_t+C_t+I^O_t+F_t,
+\end{equation}
+while $X_t+L_t$ enters the debt stock through the TIPS liability itself.  Consequently,
+$B_t+X_t+L_t=P_t+I_t+F_t$, preserving equation~\eqref{eq:debtidentity} without financing
+TIPS compensation twice.  If $B_t<0$, the model reports debt retirement rather than
+negative ``new borrowing.''
+
+Quarterly ratios use the annual-rate GDP denominator:
+\begin{equation}
+ \frac{P_t}{Y_t}\bigg|_{\mathrm{annualized}}=\frac{4P_t}{Y_t},
+ \qquad
+ \frac{I_t}{Y_t}\bigg|_{\mathrm{annualized}}=\frac{4I_t}{Y_t},
+ \qquad
+ \frac{D_t}{Y_t}=\frac{D_t}{Y_t}.
+\end{equation}
+
+\section{Treasury cohorts and refinancing}
+
+Each marketable Treasury cohort $i$ has a type $k_i$, issue quarter, maturity quarter,
+principal $Q_{i,t}$, fixed coupon, and effective financing rate $r_{i,t}$.  The starting
+ledger contains 458 CUSIPs.  At the end of quarter $t$, let $\mathcal{M}_t$ be the set of
+cohorts that mature.  Maturing principal is
+\begin{equation}
+ R_t=\sum_{i\in\mathcal{M}_t}Q_{i,t}.
+\end{equation}
+The model removes $R_t$ and issues the same amount as replacement debt.  This operation
+changes the rate and maturity composition but not the total debt stock or the deficit.
+Gross Treasury issuance is therefore
+\begin{equation}
+ \text{gross issuance}_t=R_t+\max(B_t,0),
+\end{equation}
+whereas genuinely new borrowing is only $\max(B_t,0)$.
+
+\subsection*{Bills and fixed-rate notes and bonds}
+
+Bills are carried at principal with a transparent effective-yield approximation.  Their
+quarterly financing cost is $Q_{i,t}r_{i,t}/4$.  Their short representative maturity makes
+bill costs respond rapidly to new issuance rates.
+
+For notes and bonds, $r_{i,t}$ is fixed until maturity.  A rate shock at time $t$ therefore
+does not change the current cost of a long-dated inherited security.  It affects that
+principal only after the security enters $\mathcal{M}_t$ and is replaced.  This is the main
+source of gradual repricing in the model.  Starting effective rates use issue-amount-weighted
+auction yields when available, otherwise coupons; premium and discount amortization are not
+modeled separately.
+
+\subsection*{TIPS}
+
+For a TIPS cohort, let $\pi^{q,\mathrm{ref}}_t$ be the quarterly reference-CPI change.  The
+indexed principal and inflation compensation are
+\begin{align}
+ Q_{i,t}^{+}&=Q_{i,t}^{-}(1+\pi^{q,\mathrm{ref}}_t),\\
+ X_{i,t}&=Q_{i,t}^{+}-Q_{i,t}^{-}.
+\end{align}
+The real coupon is applied to indexed principal, so quarterly coupon cost is
+$Q_{i,t}^{+}r_i/4$.  At maturity, redemption is the greater of indexed principal and
+original par.  These conventions follow Treasury's TIPS terms and federal budget treatment,
+under which principal adjustments and coupon accruals are recorded as interest
+\cite{tips,cbonetinterest}.  The official index is daily and uses a lagged reference CPI;
+the quarterly model approximates it with a one-quarter lag.
+
+\subsection*{Floating-rate notes}
+
+Treasury floating-rate notes (FRNs) use the most recent 13-week bill auction rate plus a
+fixed auction spread and reset weekly \cite{frn}.  At quarterly resolution, the simulator
+uses
+\begin{equation}
+ r^{\mathrm{FRN}}_{i,t}=r^{\mathrm{short}}_t+s_i
+\end{equation}
+and resets all FRNs once per quarter.  FRN interest therefore responds to a rate shock
+without waiting for final maturity.
+
+\subsection*{New issuance}
+
+New deficit borrowing is allocated using the starting public marketable composition:
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Instrument & Issuance share & Representative tenor \\
+\midrule
+Bills & 21.54\% & 1 quarter \\
+Notes & 51.82\% & 7 years \\
+Bonds & 17.29\% & 20 years \\
+TIPS & 7.03\% & 10 years \\
+FRNs & 2.33\% & 2 years \\
+\bottomrule
+\end{tabular}
+\end{center}
+This fixed mix is an explicit approximation, not a prediction of Treasury debt-management
+policy.  Short, intermediate, long, TIPS-real, and FRN-spread assumptions are separately
+visible.
+
+\section{Debt coverage and interest definitions}
+
+The headline stock is federal debt held by the public, not gross federal debt.  It is
+decomposed as
+\begin{equation}
+ D_t=M_t+O_t,
+\end{equation}
+where $M_t$ is modeled marketable debt and $O_t$ is other debt held by the public.  MSPD
+security detail reports total amounts outstanding rather than public ownership by CUSIP.
+The model therefore scales CUSIP principal within each instrument class to the MSPD
+public-held class total.  On September 30, 2025, the reconciliation is
+\begin{align*}
+ D_0 &= \$30{,}277.766\text{ billion},\\
+ M_0 &= \$29{,}695.002\text{ billion},\\
+ O_0 &= \phantom{\$30{,}}\$582.764\text{ billion}.
+\end{align*}
+
+Modeled debt interest is not relabeled as CBO net interest.  CBO net interest consists
+primarily of interest on debt held by the public, offset by interest income and adjusted for
+other federal budget accounts \cite{cbonetinterest}.  The simulator retains CBO's series as
+a comparison and reports the difference.  CBO itself uses security-level principal,
+maturity, rate, financing needs, and issuance-mix assumptions when projecting net interest
+\cite{cbomethods}.
+
+\section{Scenarios and interpreting inflation}
+
+The baseline uses CBO paths for primary deficits, other financing, real GDP, inflation,
+3-month bill rates, and 10-year note rates.  Experimental scenarios may change inflation,
+real growth, the primary deficit, and issuance rates independently.  This permits
+deliberately artificial comparisons---for example, high inflation with unchanged rates---to
+isolate accounting channels without pretending that such a combination is a forecast.
+
+For a baseline $b$ and scenario $s$, the debt-ratio difference is
+\begin{equation}
+ \Delta d_t=\frac{D^s_t}{Y^s_t}-\frac{D^b_t}{Y^b_t}.
+\end{equation}
+The simulator uses an exact two-factor Shapley decomposition.  The nominal-debt contribution
+is
+\begin{equation}
+ \Delta d_t^D=\frac{1}{2}\left[
+ \left(\frac{D^s_t}{Y^b_t}-\frac{D^b_t}{Y^b_t}\right)
+ +\left(\frac{D^s_t}{Y^s_t}-\frac{D^b_t}{Y^s_t}\right)\right],
+\end{equation}
+and the nominal-GDP contribution is
+\begin{equation}
+ \Delta d_t^Y=\frac{1}{2}\left[
+ \left(\frac{D^b_t}{Y^s_t}-\frac{D^b_t}{Y^b_t}\right)
+ +\left(\frac{D^s_t}{Y^s_t}-\frac{D^s_t}{Y^b_t}\right)\right].
+\end{equation}
+By construction, $\Delta d_t^D+\Delta d_t^Y=\Delta d_t$.  This is accounting attribution,
+not a causal estimate.  It makes the central interpretation explicit: inflation may lower
+debt/GDP through $Y_t$ while nominal debt $D_t$ continues to rise because of primary
+deficits, TIPS compensation, and refinancing costs.
+
+\section{Limitations}
+
+The model has no endogenous response of taxes, program spending, monetary policy, investor
+demand, exchange rates, or real economic activity.  It does not model default, crisis
+probabilities, or a debt threshold.  Federal Reserve holdings are included in debt held by
+the public, but Treasury and Federal Reserve balance sheets are not consolidated; reserve
+interest, remittances, and the Fed's portfolio are outside the model.  Other public debt has
+no security-level maturity structure, fiscal-year flows are spread evenly across quarters,
+and new issuance uses representative rather than auction-specific maturities.  Results are
+therefore conditional accounting experiments and should always be reported together with
+their imposed inflation, rate, growth, and primary-deficit paths.
+
+\begin{thebibliography}{9}
+
+\bibitem{cbo2026outlook}
+Congressional Budget Office.
+\emph{The Budget and Economic Outlook: 2026 to 2036}.
+February 2026.
+\url{https://www.cbo.gov/publication/62105}.
+
+\bibitem{cbonetinterest}
+Congressional Budget Office.
+\emph{Federal Net Interest Costs: A Primer}.
+December 2020.
+\url{https://www.cbo.gov/publication/56910}.
+
+\bibitem{cbomethods}
+Congressional Budget Office.
+\emph{CBO Explains How It Develops the Budget Baseline}.
+April 2023.
+\url{https://www.cbo.gov/publication/59085}.
+
+\bibitem{mspd}
+U.S. Department of the Treasury, Bureau of the Fiscal Service.
+\emph{Monthly Statement of the Public Debt}.
+September 30, 2025 observation.
+\url{https://fiscaldata.treasury.gov/datasets/monthly-statement-public-debt/}.
+
+\bibitem{tips}
+U.S. Department of the Treasury, TreasuryDirect.
+\emph{Treasury Inflation-Protected Securities (TIPS)}.
+\url{https://www.treasurydirect.gov/marketable-securities/tips/}.
+
+\bibitem{frn}
+U.S. Department of the Treasury, TreasuryDirect.
+\emph{Floating Rate Notes}.
+\url{https://www.treasurydirect.gov/marketable-securities/floating-rate-notes/}.
+
+\end{thebibliography}
+
+\end{document}

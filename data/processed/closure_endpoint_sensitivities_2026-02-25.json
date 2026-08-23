@@ -1,0 +1,54 @@
+{
+  "closure_end": "2054Q4",
+  "closure_start": "2045Q1",
+  "haircut_post_event_rate_sensitivity": {
+    "post_event_yield_shock_0bp": {
+      "eligible_debt_billions": 88297.64106713429,
+      "face_value_reduction_billions": 17535.121215125197,
+      "haircut_fraction": 0.1985910495818674,
+      "status": "solved"
+    },
+    "post_event_yield_shock_1000bp": {
+      "eligible_debt_billions": 88297.64106713429,
+      "face_value_reduction_billions": 56998.8531006792,
+      "haircut_fraction": 0.6455308704945124,
+      "status": "solved"
+    },
+    "post_event_yield_shock_500bp": {
+      "eligible_debt_billions": 88297.64106713429,
+      "face_value_reduction_billions": 40256.64431050649,
+      "haircut_fraction": 0.45591981647503627,
+      "status": "solved"
+    }
+  },
+  "inflation_rate_response_sensitivity": {
+    "no_additional_rate_response": {
+      "additional_cumulative_price_change": 0.23057759111708145,
+      "cumulative_interest_difference_billions": 2918.060071683147,
+      "gross_refinancing_share_of_starting_marketable_debt": 5.303678219961317,
+      "status": "solved",
+      "total_annualized_inflation": 0.06330426759948482
+    },
+    "one_for_one_contemporaneous": {
+      "additional_cumulative_price_change": null,
+      "cumulative_interest_difference_billions": 127627.4439686691,
+      "gross_refinancing_share_of_starting_marketable_debt": 6.017691459121045,
+      "status": "no_solution",
+      "total_annualized_inflation": 0.16435147776324777
+    },
+    "one_for_one_lagged_8q": {
+      "additional_cumulative_price_change": null,
+      "cumulative_interest_difference_billions": 200137.45158486735,
+      "gross_refinancing_share_of_starting_marketable_debt": 5.6373393539509244,
+      "status": "no_solution",
+      "total_annualized_inflation": 0.2313131887685782
+    }
+  },
+  "starting_debt_gdp_ratio": 1.3851108729453743,
+  "target_definition": "endpoint debt/GDP no higher than starting debt/GDP",
+  "tips_sensitivity": {
+    "additional_cumulative_change_due_to_tips": 0.030747429209877664,
+    "with_tips_required_cumulative_price_change": 0.23057759111708145,
+    "without_tips_required_cumulative_price_change": 0.1998301619072038
+  }
+}

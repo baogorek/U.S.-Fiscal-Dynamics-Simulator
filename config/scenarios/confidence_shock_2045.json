@@ -1,0 +1,26 @@
+{
+  "closure_definition": "terminal debt/GDP no higher than the ratio inherited when fiscal action begins; final-four-quarter increase no more than 0.1 percentage point",
+  "closure_start": "2045Q1",
+  "confidence_premiums_basis_points": [
+    250,
+    500,
+    1000
+  ],
+  "default_or_haircut": "none",
+  "delayed_closure_endpoint": "2054Q4",
+  "experiment": "2045 bond-market confidence-premium stress",
+  "inflation_path": "unchanged baseline",
+  "model_version": "0.2",
+  "other_financing_path": "unchanged baseline",
+  "premium_duration_quarters": 40,
+  "premium_scope": "new bill, note, bond, and TIPS issuance; FRNs reset from the shocked bill rate",
+  "primary_deficit_path": "unchanged nominal baseline",
+  "real_growth_path": {
+    "2045Q1_to_2045Q4_annualized": -0.02,
+    "2046Q1_to_2046Q4_annualized": 0.0,
+    "thereafter": "CBO baseline without level catch-up"
+  },
+  "simulation_end": "2054Q4",
+  "starting_debt_gdp_ratio": 1.3851108729453743,
+  "warning": "Exogenous stress scenario, not a forecast or estimated crisis probability."
+}

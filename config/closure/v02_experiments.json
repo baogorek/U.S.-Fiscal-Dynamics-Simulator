@@ -1,0 +1,31 @@
+{
+  "default_closure_horizon_quarters": 40,
+  "default_closure_target": {
+    "endpoint": "no higher than starting debt/GDP",
+    "final_four_quarter_max_increase": 0.001
+  },
+  "fiscal_bounds_gdp_share": [
+    0.0,
+    0.2
+  ],
+  "haircut_bounds": [
+    0.0,
+    1.0
+  ],
+  "haircut_eligible_set": "modeled marketable Treasury debt held by public",
+  "inflation_bounds_additional_cumulative_price_change": [
+    0.0,
+    10.0
+  ],
+  "inflation_requirement_assumption": "five-year episode; one-for-one contemporaneous pass-through",
+  "long_term_extension_release": "2026-02-25",
+  "maximum_period": "2056Q3",
+  "model_version": "0.2",
+  "post_default_yield_shock_default_basis_points": 0.0,
+  "repression_bounds_basis_points": [
+    0.0,
+    2000.0
+  ],
+  "repression_inflation_path": "CBO baseline",
+  "ten_year_baseline_release": "2026-02-11"
+}

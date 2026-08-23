@@ -1,0 +1,19 @@
+{
+  "data_vintage": "2026-02",
+  "description": "February 2026 CBO macro, primary-deficit, rate, and financing paths, with documented issuance approximations.",
+  "end_period": "2036Q3",
+  "imposed_parameters": {
+    "cbo_long_term_release_date": "2026-02-25",
+    "cbo_ten_year_release_date": "2026-02-11",
+    "cbo_vintage": "2026-02",
+    "fiscal_to_quarterly_conversion": "equal nominal quarters",
+    "new_frn_spread": 0.001,
+    "post_2036_economic_interpolation": "constant within-year compound growth calibrated to CBO annual means",
+    "post_2036_other_financing_assumption": "zero; not published in long-term data",
+    "post_2036_treasury_rate_assumption": "February 11, 2026 final quarterly 3-month and 10-year rates held constant",
+    "tips_real_issuance_rate": 0.0175,
+    "treasury_observation_date": "2025-09-30"
+  },
+  "scenario_name": "baseline",
+  "start_period": "2025Q4"
+}
