@@ -7,25 +7,30 @@ its assumptions; it does not show that the adjustment is economically or politic
 
 ## Federal Reserve consolidation
 
-Debt held by Federal Reserve Banks is included in conventional debt held by the public,
-but v0.1 does not consolidate Treasury and Federal Reserve balance sheets. It does not
-model reserve remuneration, the Fed portfolio, deferred assets, remittances, or monetary
-policy. Consequently, modeled Treasury interest is not a measure of consolidated public-
-sector financing cost, and the model makes no claim about fiscal dominance. A future Fed
-module can be added without changing the cohort ledger, but it is outside v0.1.
+The general forward engine includes debt held by Federal Reserve Banks in conventional
+debt held by the public and does not consolidate the two institutions. The experimental
+policy layer separately tracks Treasury holdings, reserve balances, reserve remuneration,
+deferred remittances, and consolidated financing cost. That balance sheet remains
+incremental and omits currency, reverse repos, agency securities, and operating expenses.
+The first sequential crisis experiment does not yet feed reserve interest or Federal
+Reserve balance-sheet changes into aggregate demand.
 
 ## Behavioral and macroeconomic omissions
 
-- No endogenous fiscal response: taxes, program spending, and primary deficits do not
-  respond unless the user changes their path.
-- No endogenous monetary response: inflation and issuance rates are independent inputs.
-- No investor behavior, panic, liquidity premium, term-premium model, or endogenous
-  Treasury risk premium.
+- In the general forward and closure engines, taxes, program spending, primary deficits,
+  inflation, and issuance rates remain supplied paths.
+- Experimental feedback engines use visible reduced-form monetary, output, inflation, and
+  automatic-stabilizer rules. Their coefficients are scenario assumptions rather than
+  estimates.
+- No investor behavior, panic, liquidity premium, or estimated investor-demand curve. The
+  sequential slice can apply a lagged, reference-relative debt-yield sensitivity, but it is
+  not a structural term-premium or default-risk model.
 - No endogenous default, restructuring, auction failure, capital flight, or exchange-rate
   channel. The haircut tool only removes eligible face value mechanically.
 - No general equilibrium, household/firm optimization, labor-supply response, or crowding
   out.
-- No endogenous real-growth damage, recession probability, or inflation persistence.
+- No structurally estimated real-growth damage, recession probability, or expectations
+  process. The sequential slice uses only reduced-form output and inflation persistence.
 - No stochastic shocks or Monte Carlo uncertainty.
 - No political probabilities, Congressional reaction function, or crisis threshold.
 - The confidence-premium experiment imposes its spread; it does not model the investor
@@ -35,6 +40,73 @@ module can be added without changing the cohort ledger, but it is outside v0.1.
   the real-GDP denominator.
 
 Scenario results are conditional arithmetic, not predictions or causal estimates.
+
+## Sequential crisis slice
+
+The [September 2026 review](sustainability_review.md) verifies two central identification
+limits. First, reference-relative interest demand, debt yields, and absorption protect the
+no-shock reference by construction; the engine cannot discover baseline loss of fiscal
+credibility without a disturbance or a different economic closure. Second, changing
+inflation persistence from 0.98 to 0.90 removes the four-percent breach under the same
+Treasury stress and spending shares. Neither the inflation frontier nor the gross-issuance
+ceiling is an empirically estimated U.S. sustainability boundary. The Treasury premium
+also has no direct private-demand effect in the original run; a separate two-year private
+spread does not identify its ten-year transmission.
+
+The sequential experiment closes a limited rate--interest--demand--inflation loop without
+imposing debt stabilization. Important omissions remain:
+
+- Interest-recipient shares use an approximate June/FY2026 aggregate benchmark; domestic
+  and foreign spending fractions remain scenario inputs. Holdings do not migrate as debt,
+  yields, or Federal Reserve purchases change.
+- Incremental cash interest enters demand through a reduced-form spending fraction and
+  output multiplier. Household balance sheets, wealth effects, taxes, and portfolio
+  substitution are absent.
+- Inflation expectations enter only through persistence. There is no separately modeled
+  credibility, wage-setting, import-price, exchange-rate, or fiscal-expectations channel.
+- The Federal Reserve follows a reaction rule. The model does not yet calculate the minimum
+  rate required to defend a specified inflation ceiling.
+- Inflation ceilings are diagnostics. The path is allowed to cross them and no policy
+  change is automatically triggered by a breach.
+- Private credit stress is an imposed spread. Bank lending, mortgages, business credit,
+  defaults, and financial losses do not generate it endogenously.
+- The default sequential runs continue to clear Treasury financing at calculated issuance
+  rates. A separate private-market-clearing experiment feeds the spread required by a supplied
+  aggregate absorption curve into issuance and stops when its finite capacity is exceeded.
+  Tenor-specific investor and dealer demand, estimated elasticities, auction tails, collateral
+  stress, and payment disruption remain outside this slice.
+- The optional debt-yield feedback translates a 2026 estimate for expected debt, longer-run
+  neutral rates, and the ten-year term premium into maturity-specific issuance rates. The
+  source does not identify this experiment's one-quarter lag, its mapping to notes and TIPS,
+  or any nonlinear crisis response. The rule therefore remains a sensitivity calculation.
+- Issuance rates are bounded at 99 percent because the cohort engine supports rates only up
+  to 100 percent. A binding rate bound identifies the numerical boundary of the experiment.
+- A path that accelerates through 2056 demonstrates instability under the selected
+  coefficients. It does not establish the date or probability of a real-world crisis.
+- A private financing-capacity failure is a regime-switch boundary. Federal Reserve purchases,
+  fiscal adjustment, regulatory absorption, inflationary accommodation, or payment disruption
+  could follow. The sequential experiment ends at that choice; the separate recovery run
+  selects one conditional continuation.
+
+## Conditional 2039 recovery
+
+- The recovery inherits the final successful central-capacity Treasury stock, then supplies
+  real growth, inflation, and marginal issuance-rate paths through 2056. Those paths are
+  transparent conditions for the calculation rather than forecasts or outputs of the
+  sequential feedback rule.
+- The 5.48-percent-of-GDP primary-balance improvement is solved to meet a declared endpoint
+  and final-year trend condition. The target therefore determines the reported fiscal size.
+- The assumed fall in marginal Treasury rates represents credibility and temporary market
+  support in reduced form. Investor expectations, Federal Reserve purchases, reserve
+  creation, and the exit from that support remain outside the recovery ledger.
+- Real growth receives the specified one-year contraction and subsequent recovery. The
+  fiscal package has no separately estimated tax, spending, labor-supply, productivity, or
+  distributional effect on that path.
+- The invented legislative components illustrate how a broad package might be described.
+  Only their aggregate primary-balance effect enters the simulator.
+- Rate normalization without the fiscal package is a controlled accounting comparison under
+  the same favorable macro assumptions. Market behavior following a failed congressional
+  adjustment remains unestimated.
 
 ## Closure-specific omissions
 

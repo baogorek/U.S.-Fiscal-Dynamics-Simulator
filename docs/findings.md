@@ -1,5 +1,10 @@
 # Findings from v0.1 and v0.2 experiments
 
+The [September 2026 sustainability review](sustainability_review.md) adds no-shock fiscal
+results and revises interpretation of the later confidence experiments. The approximately
+2039 capacity boundary and high-inflation paths remain conditional scenario outputs.
+They do not establish an inevitable U.S. crisis or inflationary endgame.
+
 These are reproducible conditional model results, not forecasts. Scenario JSON is under
 `config/scenarios/`; quarterly output is in
 `data/processed/named_scenarios_quarterly_2026-02.csv`; summary and stress-grid outputs are

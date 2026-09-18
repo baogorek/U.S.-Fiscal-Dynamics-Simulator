@@ -1,0 +1,30 @@
+{
+  "adaptive_issuance_rule": {
+    "activation_basis_points": 100.0,
+    "bill_share_increase_per_additional_100_basis_points": 0.05,
+    "maximum_bill_share": 0.5
+  },
+  "confidence_premium_basis_points": 500.0,
+  "end": "2036Q3",
+  "experiment": "Treasury debt-management responses to an imposed confidence premium",
+  "frequency_source": "https://home.treasury.gov/news/press-releases/sb0212",
+  "long_end_buyback_capacity": {
+    "buckets_remaining_maturity_quarters": [
+      [
+        40,
+        79
+      ],
+      [
+        80,
+        120
+      ]
+    ],
+    "face_capacity_per_bucket_per_quarter_billions": 16.0,
+    "financing_instrument": "bill",
+    "minimum_face_capacity_per_operation_billions": 4.0,
+    "operations_per_bucket_per_quarter": 4
+  },
+  "scope_warning": "The one-quarter path is a run-rate capacity equivalent, not the still-unreleased September-November operation schedule. The sustained path is a ten-year counterfactual, not announced Treasury policy. Announced maximum capacity is not the same as completed purchases. Yields do not yet respond to issuance or buybacks.",
+  "source": "https://home.treasury.gov/news/press-releases/sb0607",
+  "start": "2026Q4"
+}

@@ -1,0 +1,24 @@
+{
+  "experiment": "Federal Reserve policy regimes on the 2036 inflation path",
+  "fed_balance_sheet_scope": "incremental purchases and reserves beginning in 2036Q4; existing SOMA and reserve balances are excluded pending a pinned historical balance-sheet path",
+  "inflation_behavior": "the reference inflation path remains imposed; policy rates do not yet feed back into inflation or output",
+  "inflation_response": 1.5,
+  "inflation_target": 0.02,
+  "inherited_confidence_premium_basis_points": 500.0,
+  "initial_liquidity_stress_basis_points": 100.0,
+  "liquidity_stress_quarters": 4,
+  "policy_end": "2046Q3",
+  "policy_inflation_measure": "model GDP-price inflation used provisionally as the policy-inflation proxy; a separate PCE path remains to be added",
+  "policy_regimes": [
+    "price_stability",
+    "market_functioning",
+    "sterilized_yield_cap",
+    "fiscal_dominance"
+  ],
+  "policy_start": "2036Q4",
+  "purchase_elasticity_basis_points_per_gross_issuance": 500.0,
+  "reaction_smoothing": 0.5,
+  "reference_additional_price_level_change": 0.3863669459031558,
+  "reference_average_inflation_rate": 0.05384535251182321,
+  "warning": "The purchase elasticity is an explicit placeholder, not an empirical estimate. Scenario comparisons are conditional and are not crisis probabilities."
+}

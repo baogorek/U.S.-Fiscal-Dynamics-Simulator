@@ -1,5 +1,12 @@
 # Literature and terminology checks
 
+The [September 2026 sustainability review](sustainability_review.md#economic-references-checked)
+adds checks of sustainable rollover, monetary-fiscal coordination, and the interpretation
+of interest-income effects. In particular, Auclert's redistribution results do not estimate
+the simulator's spending fraction or establish that monetary tightening becomes inflationary.
+The revised report treats the BIS discussion of interest income alongside valuation and
+fiscal-risk channels, and tests rather than assumes the robustness of the inflation result.
+
 v0.2 is a transparent partial-equilibrium simulator. These sources discipline its language
 and supply external comparisons; their equilibrium results are not imported as simulator
 parameters.
@@ -47,10 +54,24 @@ stress changes monetary-fiscal interactions. Ghosh, Kim, Mendoza, Ostry, and Qur
 Economies*](https://www.nber.org/papers/w16782) models a fiscal reaction function, risk
 premia, and an endogenous debt limit.
 
-Those structures are deliberately absent here. v0.2 consequently uses **inflationary
+Most of those structures remain absent here. v0.2 consequently uses **inflationary
 closure**, not “fiscal dominance,” and reports a mechanical financing requirement rather
-than a fiscal limit. It has no probability distribution over closure regimes, endogenous
-risk premium, monetary reaction function, or political response.
+than a fiscal limit. It has no probability distribution over closure regimes or political
+response. The sequential research slice adds reduced-form monetary and debt-yield feedback;
+neither defines an equilibrium fiscal limit.
+
+## Debt and longer-term Treasury yields
+
+Bhatt, Diercks, Eyal, and Skaperdas's 2026 Federal Reserve staff paper [*The Causal Effect
+of Debt on Interest
+Rates*](https://www.federalreserve.gov/econres/feds/the-causal-effect-of-debt-on-interest-rates.htm)
+estimates that a one-percentage-point increase in expected U.S. debt/GDP raises the
+longer-run neutral rate by about 1--2 basis points and the ten-year Treasury term premium by
+about 2--3 basis points. The sequential experiment exposes the lower and upper estimates as
+yield sensitivities. It uses a one-quarter-lagged realized debt gap relative to its parallel
+reference path, while the paper estimates expected debt effects. That difference, together
+with the experiment's maturity mapping, prevents the range from being described as a direct
+calibration of the crisis model.
 
 ## Hyperinflation terminology
 

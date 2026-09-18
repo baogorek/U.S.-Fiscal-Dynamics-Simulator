@@ -10,7 +10,7 @@
 
 \title{A Transparent Quarterly Model of U.S. Fiscal Dynamics\\
 \large Accounting, Treasury Refinancing, and Inflation}
-\author{U.S. Fiscal Dynamics Simulator, version 0.1}
+\author{U.S. Fiscal Dynamics Simulator}
 \date{August 2026}
 
 \begin{document}
@@ -38,7 +38,7 @@ lowering the debt-to-GDP ratio even if no nominal debt disappears.  Second, most
 debt does not instantly reprice: higher market rates enter federal interest costs gradually
 as securities mature, are refinanced, or reset.
 
-Version 0.1 of the U.S. Fiscal Dynamics Simulator isolates those mechanisms.  It is not a
+The U.S. Fiscal Dynamics Simulator isolates those mechanisms.  It is not a
 forecast, a general-equilibrium model, or a model of fiscal crisis.  Congress, the Federal
 Reserve, and investors do not react endogenously.  Instead, the user specifies paths for
 inflation, real growth, the primary deficit, other financing, and issuance rates.  The
@@ -224,6 +224,28 @@ The baseline uses CBO paths for primary deficits, other financing, real GDP, inf
 real growth, the primary deficit, and issuance rates independently.  This permits
 deliberately artificial comparisons---for example, high inflation with unchanged rates---to
 isolate accounting channels without pretending that such a combination is a forecast.
+
+\subsection*{Meaning of an imposed basis-point shock}
+
+For a configured shock of $b$ basis points, the forward stress helper replaces each selected
+baseline new-issuance rate $r^0_{j,t}$ during the shock window with
+\begin{equation}
+ r^{\mathrm{issue}}_{j,t}=\max\left(0,r^0_{j,t}+\frac{b}{10{,}000}\right).
+\end{equation}
+Thus 100 basis points means one percentage point and 500 basis points means five percentage
+points.  The standard parallel stress applies the same increment to bills, notes, bonds,
+and new TIPS real rates.  FRNs reset from the shocked bill reference rate plus their fixed
+spreads.  Inherited fixed-rate notes and bonds keep their existing effective rates until
+maturity; their principal is exposed only when it is refinanced.  Other public debt is not
+shocked because it lacks a modeled maturity structure.
+
+This operation is an instruction to the accounting engine, not a market model.  It does not
+say why investors demand the increment, estimate its probability, determine whether auctions
+clear, or imply an equal change in mortgages and business loans.  A recession, inflation
+path, primary-deficit change, private-credit spread, or policy reaction included in a saved
+scenario is a separate assumption unless an explicitly documented feedback rule generates
+it.  Results from a basis-point stress must therefore identify the affected tenors, duration,
+macro assumptions, and auction-clearing convention.
 
 For a baseline $b$ and scenario $s$, the debt-ratio difference is
 \begin{equation}

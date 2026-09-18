@@ -1,0 +1,5 @@
+scenario,debt_gdp_ratio,annual_transition_derivative,stability
+convergent,0.5901219693616159,0.992117730180031,stable
+convergent,1.4098780306383842,1.007882269819969,unstable
+above_unstable_fixed_point,0.5901219693616159,0.992117730180031,stable
+above_unstable_fixed_point,1.4098780306383842,1.007882269819969,unstable

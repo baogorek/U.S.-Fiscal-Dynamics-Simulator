@@ -1,0 +1,4 @@
+scenario,initial_debt_gdp_ratio,primary_deficit_gdp_share,fixed_point_count,terminal_debt_gdp_ratio
+convergent,1.0,0.008,2,0.8748163031966306
+above_unstable_fixed_point,1.6,0.008,2,1.8555577289244949
+no_fixed_point,1.0,0.0125,0,1.245154188856411

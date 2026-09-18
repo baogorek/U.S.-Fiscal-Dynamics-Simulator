@@ -1,0 +1,94 @@
+{
+  "debt_yield_feedback_rules": {
+    "central_estimate": {
+      "apply_only_to_positive_debt_gap": true,
+      "intermediate_basis_points_per_debt_gdp_percentage_point": 1.5,
+      "long_basis_points_per_debt_gdp_percentage_point": 4.0,
+      "short_basis_points_per_debt_gdp_percentage_point": 0.0,
+      "signal_lag_quarters": 1,
+      "tips_real_basis_points_per_debt_gdp_percentage_point": 1.5
+    },
+    "lower_estimate": {
+      "apply_only_to_positive_debt_gap": true,
+      "intermediate_basis_points_per_debt_gdp_percentage_point": 1.0,
+      "long_basis_points_per_debt_gdp_percentage_point": 3.0,
+      "short_basis_points_per_debt_gdp_percentage_point": 0.0,
+      "signal_lag_quarters": 1,
+      "tips_real_basis_points_per_debt_gdp_percentage_point": 1.0
+    },
+    "no_feedback": null,
+    "upper_estimate": {
+      "apply_only_to_positive_debt_gap": true,
+      "intermediate_basis_points_per_debt_gdp_percentage_point": 2.0,
+      "long_basis_points_per_debt_gdp_percentage_point": 5.0,
+      "short_basis_points_per_debt_gdp_percentage_point": 0.0,
+      "signal_lag_quarters": 1,
+      "tips_real_basis_points_per_debt_gdp_percentage_point": 2.0
+    }
+  },
+  "empirical_range": {
+    "longer_run_neutral_rate_basis_points_per_debt_gdp_percentage_point": [
+      1.0,
+      2.0
+    ],
+    "ten_year_term_premium_basis_points_per_debt_gdp_percentage_point": [
+      2.0,
+      3.0
+    ]
+  },
+  "empirical_source": "https://www.federalreserve.gov/econres/feds/the-causal-effect-of-debt-on-interest-rates.htm",
+  "end": "2056Q3",
+  "experiment": "Lagged debt-ratio feedback into Treasury issuance yields",
+  "feedback_rule": {
+    "automatic_stabilizer_semi_elasticity": 0.45,
+    "fiscal_effect_lag_quarters": 1,
+    "inflation_gap_lag_quarters": 2,
+    "inflation_output_gap_sensitivity": 0.06,
+    "inflation_persistence": 0.98,
+    "interest_income_output_multiplier": 1.0,
+    "output_gap_persistence": 0.8,
+    "policy_effect_lag_quarters": 2,
+    "policy_tightening_output_semi_elasticity": 0.25,
+    "primary_deficit_output_multiplier": 0.8,
+    "primary_deficit_scales_with_nominal_gdp": true,
+    "private_credit_spread_output_semi_elasticity": 0.15
+  },
+  "inflation_ceiling": 0.04,
+  "initial_treasury_premium_basis_points": 500.0,
+  "initial_treasury_premium_quarters": 40,
+  "interest_income_rule": {
+    "domestic_private_share": 0.5688049586285038,
+    "domestic_private_spending_fraction": 0.25,
+    "federal_reserve_share": 0.1414629275157177,
+    "federal_reserve_spending_fraction": 0.0,
+    "foreign_domestic_spending_fraction": 0.05,
+    "foreign_share": 0.2897321138557786
+  },
+  "interest_recipient_share_calibration": "config/calibration/interest_recipient_shares_2026.json",
+  "policy_rule": {
+    "inflation_response": 1.5,
+    "inflation_target": 0.02,
+    "intermediate_policy_pass_through": 0.75,
+    "long_policy_pass_through": 0.5,
+    "market_function_support_fraction": 0.75,
+    "maximum_issuance_rate": 0.99,
+    "output_gap_response": 0.5,
+    "purchase_elasticity_basis_points_per_gross_issuance": 500.0,
+    "reaction_smoothing": 0.5,
+    "regime": "price_stability",
+    "tips_real_policy_pass_through": 0.5,
+    "yield_cap_spread_basis_points": 0.0
+  },
+  "private_credit_spread_basis_points": 200.0,
+  "private_credit_spread_quarters": 8,
+  "start": "2026Q4",
+  "sustained_breach_quarters": 4,
+  "terminal_debt_target_imposed": false,
+  "warnings": [
+    "The source estimates expected debt effects, while this experiment uses a one-quarter-lagged realized debt-ratio gap.",
+    "The maturity mapping is an explicit sensitivity assumption.",
+    "The estimated local relationship does not identify crisis nonlinearities or auction failure.",
+    "The short Treasury rate remains tied to the Federal Reserve rule plus the exogenous stress premium.",
+    "Interest-recipient spending fractions remain uncalibrated."
+  ]
+}

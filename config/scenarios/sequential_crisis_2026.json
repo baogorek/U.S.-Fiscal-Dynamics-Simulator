@@ -1,0 +1,122 @@
+{
+  "end": "2056Q3",
+  "experiment": "Sequential rate-interest-income-inflation feedback",
+  "feedback_rule": {
+    "automatic_stabilizer_semi_elasticity": 0.45,
+    "fiscal_effect_lag_quarters": 1,
+    "inflation_gap_lag_quarters": 2,
+    "inflation_output_gap_sensitivity": 0.06,
+    "inflation_persistence": 0.98,
+    "interest_income_output_multiplier": 1.0,
+    "output_gap_persistence": 0.8,
+    "policy_effect_lag_quarters": 2,
+    "policy_tightening_output_semi_elasticity": 0.25,
+    "primary_deficit_output_multiplier": 0.8,
+    "primary_deficit_scales_with_nominal_gdp": true,
+    "private_credit_spread_output_semi_elasticity": 0.15
+  },
+  "inflation_ceilings": [
+    0.03,
+    0.04,
+    0.06,
+    0.08
+  ],
+  "interest_income_rules": {
+    "no_shock_central_spending": {
+      "domestic_private_share": 0.5688049586285038,
+      "domestic_private_spending_fraction": 0.25,
+      "federal_reserve_share": 0.1414629275157177,
+      "federal_reserve_spending_fraction": 0.0,
+      "foreign_domestic_spending_fraction": 0.05,
+      "foreign_share": 0.2897321138557786
+    },
+    "stress_central_interest_spending": {
+      "domestic_private_share": 0.5688049586285038,
+      "domestic_private_spending_fraction": 0.25,
+      "federal_reserve_share": 0.1414629275157177,
+      "federal_reserve_spending_fraction": 0.0,
+      "foreign_domestic_spending_fraction": 0.05,
+      "foreign_share": 0.2897321138557786
+    },
+    "stress_central_spending_no_private_spread": {
+      "domestic_private_share": 0.5688049586285038,
+      "domestic_private_spending_fraction": 0.25,
+      "federal_reserve_share": 0.1414629275157177,
+      "federal_reserve_spending_fraction": 0.0,
+      "foreign_domestic_spending_fraction": 0.05,
+      "foreign_share": 0.2897321138557786
+    },
+    "stress_full_domestic_interest_spending": {
+      "domestic_private_share": 0.5688049586285038,
+      "domestic_private_spending_fraction": 1.0,
+      "federal_reserve_share": 0.1414629275157177,
+      "federal_reserve_spending_fraction": 0.0,
+      "foreign_domestic_spending_fraction": 0.1,
+      "foreign_share": 0.2897321138557786
+    },
+    "stress_high_interest_spending": {
+      "domestic_private_share": 0.5688049586285038,
+      "domestic_private_spending_fraction": 0.5,
+      "federal_reserve_share": 0.1414629275157177,
+      "federal_reserve_spending_fraction": 0.0,
+      "foreign_domestic_spending_fraction": 0.1,
+      "foreign_share": 0.2897321138557786
+    },
+    "stress_no_interest_spending": {
+      "domestic_private_share": 0.5688049586285038,
+      "domestic_private_spending_fraction": 0.0,
+      "federal_reserve_share": 0.1414629275157177,
+      "federal_reserve_spending_fraction": 0.0,
+      "foreign_domestic_spending_fraction": 0.0,
+      "foreign_share": 0.2897321138557786
+    }
+  },
+  "interest_recipient_share_calibration": "config/calibration/interest_recipient_shares_2026.json",
+  "policy_rule": {
+    "inflation_response": 1.5,
+    "inflation_target": 0.02,
+    "intermediate_policy_pass_through": 0.75,
+    "long_policy_pass_through": 0.5,
+    "market_function_support_fraction": 0.75,
+    "maximum_issuance_rate": 0.99,
+    "output_gap_response": 0.5,
+    "purchase_elasticity_basis_points_per_gross_issuance": 500.0,
+    "reaction_smoothing": 0.5,
+    "regime": "price_stability",
+    "tips_real_policy_pass_through": 0.5,
+    "yield_cap_spread_basis_points": 0.0
+  },
+  "private_absorption_rules": {
+    "central_capacity": {
+      "capacity_increase_fraction_per_100_basis_points": 0.05,
+      "maximum_capacity_multiple": 1.5,
+      "minimum_capacity_multiple": 0.0
+    },
+    "tight_capacity": {
+      "capacity_increase_fraction_per_100_basis_points": 0.025,
+      "maximum_capacity_multiple": 1.25,
+      "minimum_capacity_multiple": 0.0
+    },
+    "wide_capacity": {
+      "capacity_increase_fraction_per_100_basis_points": 0.1,
+      "maximum_capacity_multiple": 2.0,
+      "minimum_capacity_multiple": 0.0
+    }
+  },
+  "private_credit_spread_basis_points": 200.0,
+  "private_credit_spread_quarters": 8,
+  "start": "2026Q4",
+  "sustained_breach_quarters": 4,
+  "terminal_debt_target_imposed": false,
+  "treasury_premium_basis_points": 500.0,
+  "treasury_premium_quarters": 40,
+  "warnings": [
+    "Interest-recipient shares approximate official aggregate holdings; spending fractions remain scenario assumptions.",
+    "Endogenous Treasury investor demand and auction clearing remain outside this slice.",
+    "Private-absorption outputs are sensitivity diagnostics, not estimated demand curves.",
+    "Inflation expectations are represented only through reduced-form persistence.",
+    "Reserve interest is recorded elsewhere but has not entered this demand channel.",
+    "Ceiling breaches are diagnostics; inflation is not clipped to a ceiling.",
+    "Scenario comparisons are conditional and are not crisis probabilities."
+  ]
+}

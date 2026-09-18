@@ -1,0 +1,188 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{amsmath,booktabs,tabularx,microtype,xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\hypersetup{pdftitle={What Is Missing: A Test for Loss of Sustainable Financing},
+  pdfauthor={U.S. Fiscal Dynamics Simulator}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\title{What Is Missing: A Test for Loss of Sustainable Financing}
+\author{U.S. Fiscal Dynamics Simulator}
+\date{September 5, 2026}
+\begin{document}
+\maketitle
+
+\textbf{The missing economic object is a sustainable-financing schedule, together with
+a rule for resolving the conflict when the fiscal path cannot be supported.} A debt ledger
+shows financing needs. It does not establish the returns at which households and
+institutions willingly hold the resulting liabilities, or how expectations of taxes,
+inflation, and payments affect those returns.
+
+There is a tractable way to sharpen the question before attempting a large new model.
+Mian, Straub, and Sufi show that comparing the current interest rate with growth misses
+how borrowing itself changes the rate. Their framework has a maximum sustainable
+permanent deficit and a condition stricter than simply interest below growth
+\cite{goldilocks}. The diagnostic below is our own annual, single-rate illustration of
+this mechanism. It is not a replication or calibration of their model.
+
+\section{The test we should have been running}
+
+Let $b$ be debt/GDP, $d$ the primary deficit as a share of current GDP, $n$ nominal growth,
+and $i(b)$ the effective nominal borrowing rate associated with a fully repriced debt stock
+of size $b$. Hold the price-stability regime and growth fixed for this experiment. Define
+\[
+F(b)=\frac{n-i(b)}{1+n}b.
+\]
+$F(b)$ is the primary deficit compatible with holding that particular debt ratio constant.
+The exact annual debt map is
+\[
+b_{t+1}-b_t=d-F(b_t).
+\]
+The question becomes whether the fiscal path meets this schedule at a point that attracts
+nearby debt paths. That is a different question from whether gross issuance exceeds a
+chosen multiple of reference auctions.
+
+With constant rates below growth, $F$ rises linearly and a positive deficit can have a
+stable resting point. If rates rise with debt, however, $F$ can reach a maximum and then
+fall. More borrowing initially provides additional room for deficit financing; beyond
+the maximum, the associated financing costs overwhelm that benefit.
+
+For constant $n$, the slope is
+\[
+F'(b)=\frac{n-i(b)-b i'(b)}{1+n}.
+\]
+At a fixed point, the annual transition derivative is $1-F'(b)$. Local stability of this
+scalar annual map requires $0<F'(b)<2$. The upper restriction prevents discrete-time
+overshooting; with the small coefficients used here it is slack. At the interior maximum,
+\[
+n-i(b)=b i'(b),
+\]
+so the borrowing rate can still be below growth when the stable branch disappears.
+
+If $d>\max_{b\geq0}F(b)$, debt increases at every debt ratio. Under these fixed assumptions
+there is no bounded debt path. This does not mean a market fails on the first simulated
+date, or that the price level must be the variable that adjusts. It means the specified
+permanent deficit has no sustainable continuation within this financing environment.
+
+\section{A worked example with no imposed debt ceiling}
+
+Take $n=4\%$ and $i(b)=3\%+0.01(b-1)$. The rate is 3 percent at debt of 100 percent of GDP;
+each additional debt/GDP percentage point raises the rate by one basis point. All these
+values are illustrative, including the slope. They are not an estimate of U.S. fiscal space.
+
+The resulting schedule is
+\[
+F(b)=\frac{0.02b-0.01b^2}{1.04}.
+\]
+It peaks at $b=1$, with a maximum stationary primary deficit of 0.9615 percent of GDP.
+A permanent deficit of 0.8 percent intersects it twice: at 59.01-percent debt/GDP, a stable
+fixed point, and at 140.99 percent, an unstable one. Starting at 100 percent, the annual
+map moves toward the lower fixed point. Starting above 140.99 percent, it moves upward
+instead. At the maximum deficit the two roots merge; at a deficit of 1.25 percent there
+are no roots. The calculation never imposes a hard debt or auction-volume ceiling.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+ width=0.94\textwidth,height=0.48\textwidth,
+ xmin=0,xmax=220,ymin=-0.25,ymax=1.5,
+ xlabel={Debt/GDP, percent},ylabel={Primary deficit/GDP, percent},
+ grid=major,grid style={gray!20}
+]
+\addplot[blue!65!black,very thick] table[col sep=comma,x=debt_gdp_pct,
+ y=steady_primary_deficit_pct] {../data/processed/fiscal_space_curve.csv};
+\addplot[black,dashed,thick] coordinates {(0,0.8)(220,0.8)};
+\addplot[red!75!black,dashed,thick] coordinates {(0,1.25)(220,1.25)};
+\addplot[only marks,mark=*,mark size=3pt,green!40!black]
+ coordinates {(59.012197,0.8)};
+\addplot[only marks,mark=o,mark size=3pt,red!75!black]
+ coordinates {(140.987803,0.8)};
+\node[font=\small,anchor=west,red!75!black] at (axis cs:4,1.34)
+ {1.25\% deficit: no intersection};
+\node[font=\small,anchor=south,blue!65!black] at (axis cs:110,1.01)
+ {Deficit compatible with constant debt/GDP};
+\node[font=\small,anchor=south west] at (axis cs:4,0.81) {0.8\% deficit};
+\node[font=\small,anchor=north,green!40!black] at (axis cs:59.012197,0.73) {Stable};
+\node[font=\small,anchor=south west,red!75!black] at (axis cs:144,0.81) {Unstable};
+\end{axis}
+\end{tikzpicture}
+\caption{Illustrative financing geometry. Intersections come from the stated rate and
+growth assumptions; none is an identified U.S. debt threshold. The high-deficit line has
+no intersection even though interest is initially below growth.}
+\end{figure}
+
+This is progress in the type of question the code answers. It is not yet progress in
+estimating the U.S. threshold: an arbitrary slope can produce an arbitrary maximum.
+The shape and location must be disciplined by economic behavior and evidence. The test
+also distinguishes a fiscal path with no sustainable resting point from the date at which
+investors recognize that problem. Those dates need not coincide.
+
+\section{What would turn the illustration into a U.S. model?}
+
+\textbf{First, explain and estimate the financing schedule.} Investor portfolios must
+account for Treasury securities, remunerated reserves, currency, private capital, and
+foreign alternatives. Safe-asset and collateral services affect required returns.
+Beliefs about future primary balances, inflation, and payment risk affect valuations.
+Data on holdings, supply shocks, yields, and returns can constrain this relationship.
+Observed Treasury yields alone cannot identify whether buyers expect future fiscal reform
+or unusually strong demand for safe assets. Discounting fiscal backing also requires its
+risk characteristics, not just today's safe Treasury rate \cite{fiscalCapacity}.
+
+\textbf{Second, connect the schedule to production and the existing cohort ledger.}
+Debt can change investment, saving, and growth; taxes and benefits affect private incomes
+and the primary balance. Maturity structure determines how marginal rates reach effective
+costs. The illustrative annual calculation assumes immediate repricing and cannot measure
+that transition. The detailed Treasury ledger is precisely the existing asset to retain.
+
+\textbf{Third, specify which authority changes behavior.} ``Fiscal policy unchanged''
+does not specify the Federal Reserve's response to an unfinanceable path. Under a monetary
+accommodation branch, solve for prices and real returns consistent with asset demand and
+the consolidated budget. Under a price-stability branch, calculate the fiscal adjustment
+or payment change needed to restore consistency. Support through interest-bearing reserves
+must retain its consolidated financing cost. For each branch, investors' anticipated
+response must agree with the response actually simulated. These are alternative conditional
+outcomes until regime probabilities have an empirical basis.
+
+\textbf{Fourth, validate what determines the boundary.} Replicate historical responses to
+debt supply, monetary tightening, and fiscal news before extrapolating a crisis. Report
+how the stable region moves with productivity, saving, foreign demand, and fiscal reaction.
+A model that produces collapse for every parameter choice fails to represent sustainable
+rollover; a model that always finances every promise at a supplied rate cannot discover
+loss of support. The acceptance test is to reproduce both with justified assumptions.
+
+The useful target is therefore an estimate of \emph{which fiscal paths remain supportable
+under which economic and policy conditions}, followed by conditional transition paths
+when they do not. A calendar crisis forecast is a further task requiring beliefs, shocks,
+and policy selection; it cannot be recovered by increasing the number of simulation steps.
+
+\section*{Reproduction}
+
+\begin{verbatim}
+uv run python scripts/run_fiscal_space_experiment.py
+uv run pytest tests/test_fiscal_space.py
+cd docs
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  fiscal_space_mechanism.tex
+\end{verbatim}
+Parameters are recorded in \path{config/scenarios/fiscal_space_illustration.json};
+curves, fixed points, and 80-year illustrative trajectories are
+\path{data/processed/fiscal_space_*.csv}. Years are deliberately not mapped to U.S.
+calendar dates. The five tests check fixed-point stability, merging and disappearance
+of roots, dependence on inherited debt, and failure of the simple interest-below-growth
+criterion. They validate the implementation, not an economic calibration.
+
+\begin{thebibliography}{9}
+\bibitem{goldilocks}
+Atif Mian, Ludwig Straub, and Amir Sufi, ``A Goldilocks Theory of Fiscal Deficits,''
+\emph{American Economic Review}, 115(12), 2025, pp. 4253--4291.
+\url{https://www.aeaweb.org/articles?id=10.1257/aer.20220308}.
+\bibitem{fiscalCapacity}
+Zhengyang Jiang, Hanno Lustig, Stijn Van Nieuwerburgh, and Mindy Z. Xiaolan,
+\emph{Measuring U.S. Fiscal Capacity using Discounted Cash Flow Analysis},
+NBER Working Paper 29902, 2022.
+\url{https://www.nber.org/papers/w29902}.
+\end{thebibliography}
+\end{document}

@@ -1,5 +1,28 @@
 # Methodology
 
+## Sustainability review diagnostics
+
+`sustainability.decompose_debt_ratio` reconciles each quarter's debt-ratio change into
+primary borrowing, modeled interest, other financing (including buyback premiums or
+discounts), and nominal GDP growth. If opening debt is `B`, prior GDP is `Y0`, and
+current GDP is `Y1`, the growth contribution is `B/Y1 - B/Y0`. The flow contributions
+divide actual quarterly amounts by `Y1`; they are not annualized when summed to explain
+a four-quarter ratio change. A local primary improvement annualizes the quarter's
+accounting gap, holding its inherited financing costs and GDP fixed. It differs from a
+permanent fiscal package, which changes the later debt stock and interest bill.
+
+`sustainability.constant_policy_debt_path` separately illustrates the exact annual
+recursion `b[t] = (1+i)/(1+n) * b[t-1] + d`, with primary deficit `d` divided by current
+GDP. This illustration has one effective interest rate and no maturity structure. It
+allows net assets if sufficiently large primary surpluses extinguish net debt.
+
+The experiment `scripts/run_sustainability_review.py` uses the existing cohort and
+sequential engines for the U.S. results. Its no-shock fiscal solver imposes a final debt
+ceiling at the opening ratio and zero final-four-quarter increase. The chosen primary
+adjustment is conditional on unchanged reference growth and issuance rates. Its separate
+macro alternatives test unestimated transmission coefficients without replacing the
+original experiment defaults. See [the review](sustainability_review.md).
+
 ## Purpose and timing
 
 The simulator is a deterministic quarterly cash-flow and debt-rollover model. Each row
@@ -109,6 +132,11 @@ The principal adjustment is recorded as `tips_inflation_compensation` and includ
 the TIPS liability, so the model does not issue the same amount a second time. Coupons are
 paid on indexed principal using the real coupon. At maturity, modeled redemption cannot
 fall below original par, approximating Treasury's deflation floor.
+
+When a scenario supplies a negative real yield for newly issued TIPS, the cohort receives a
+zero stated coupon and retains the negative yield in its effective-rate field as an
+approximation to issuance above par. The ledger does not separately add an issue-price
+premium to Treasury cash proceeds.
 
 Actual Treasury index ratios use a daily interpolated, roughly three-month-lagged reference
 CPI. v0.1 approximates this with a configurable one-quarter CPI lag, including for scenario
@@ -236,6 +264,21 @@ quarterly deficit reduction_t = Delta PB * nominal GDP_t / 4.
 Thus a 2.0% baseline primary deficit plus a 2.9-point improvement becomes approximately a
 0.9% primary surplus. A linear phase-in can spread the adjustment over any positive number
 of quarters. The model does not allocate the change between taxes and spending.
+
+### Conditional recovery settlement
+
+The 2039 recovery experiment runs in two stages. The first stage uses the sequential crisis
+rules through 2039Q2, the final quarter in which the central private-buyer curve clears.
+The second stage begins in 2039Q3 with published quarterly paths for real growth, inflation,
+and new-issue rates. Given those paths, the cohort engine solves for a permanent fiscal
+improvement, phased in over 16 quarters, that returns debt/GDP to no more than its 2039Q2
+level by 2056Q3 with the ratio falling over the final year.
+
+A companion run holds the same growth, inflation, and interest-rate paths fixed while
+setting the fiscal improvement to zero. The difference between the two debt paths isolates
+the accounting contribution of the fiscal settlement. The supplied macroeconomic and rate
+paths remain conditional assumptions; this experiment does not estimate how legislation
+would cause them.
 
 ### Inflationary closure
 

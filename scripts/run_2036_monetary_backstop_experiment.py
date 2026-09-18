@@ -1,11 +1,11 @@
-"""Test a monetary-backstop endgame after a decade of fiscal pass-the-buck.
+"""Test rate-cap and inflation experiments after a decade of rate stress.
 
 The experiment is deliberately conditional. A 500-basis-point confidence premium
 and a two-year recession begin in 2026Q4. Primary deficits remain on their nominal
 CBO paths. In 2036Q4, the experiment compares continued market stress with a
-backstop that returns new-issuance rates to their baseline paths. It then uses the
-v0.2 inverse solver to find the five-year inflationary episode required to stabilize
-debt/GDP over the following ten years.
+rate cap that returns new-issuance rates to their baseline paths. It then uses the
+v0.2 inverse solver to distinguish a five-year price-level reset from a ten-year
+inflation path that also satisfies the terminal-flow stability condition.
 """
 
 from __future__ import annotations
@@ -255,6 +255,20 @@ def main() -> None:
         bounds=(0.0, 5.0),
         **common,
     )
+    endpoint_common = {key: value for key, value in common.items() if key != "target"}
+    five_year_endpoint_reset = solve_inflation_closure(
+        inherited_stock,
+        post_backstop_baseline,
+        episode=InflationEpisode(
+            duration_quarters=INFLATION_DURATION_QUARTERS,
+            shape="multi_year",
+            rate_response=InflationRateResponse.no_response(),
+            primary_deficit_scales_with_gdp=True,
+        ),
+        target=ClosureTarget.specified_ratio(inherited_ratio),
+        bounds=(0.0, 5.0),
+        **endpoint_common,
+    )
     persistent_inflation_scaled_deficits = solve_inflation_closure(
         inherited_stock,
         post_backstop_baseline,
@@ -324,6 +338,11 @@ def main() -> None:
             comparison_interest_billions=continued_interest,
         ),
         _solution_summary(
+            "rate_cap_plus_five_year_inflation_endpoint_reset",
+            five_year_endpoint_reset,
+            comparison_interest_billions=continued_interest,
+        ),
+        _solution_summary(
             "rate_cap_plus_persistent_inflation_deficits_scale_with_gdp",
             persistent_inflation_scaled_deficits,
             comparison_interest_billions=continued_interest,
@@ -359,6 +378,9 @@ def main() -> None:
         "rate_cap_only": rate_cap_only,
         "rate_cap_plus_inflation_fixed_nominal_deficits": inflation_fixed_nominal.result,
         "rate_cap_plus_inflation_deficits_scale_with_gdp": inflation_scaled_deficits.result,
+        "rate_cap_plus_five_year_inflation_endpoint_reset": (
+            five_year_endpoint_reset.result
+        ),
         "rate_cap_plus_persistent_inflation_deficits_scale_with_gdp": (
             persistent_inflation_scaled_deficits.result
         ),
@@ -381,6 +403,7 @@ def main() -> None:
     for name, solution in {
         "rate_cap_fixed_nominal_deficits": inflation_fixed_nominal,
         "rate_cap_deficits_scale_with_gdp": inflation_scaled_deficits,
+        "rate_cap_five_year_inflation_endpoint_reset": five_year_endpoint_reset,
         "rate_cap_persistent_inflation_deficits_scale_with_gdp": (
             persistent_inflation_scaled_deficits
         ),
@@ -456,7 +479,7 @@ def main() -> None:
     )
 
     config = {
-        "experiment": "monetary backstop after a decade of fiscal pass-the-buck",
+        "experiment": "rate-cap and inflation paths after a decade of refinancing stress",
         "model_version": "0.2",
         "pre_backstop": {
             "start": str(SHOCK_START),
@@ -472,7 +495,8 @@ def main() -> None:
                 "new bill, note, bond, and TIPS issuance rates return immediately to "
                 "the CBO baseline path; coupons on inherited debt remain unchanged"
             ),
-            "inflation_episode_quarters": INFLATION_DURATION_QUARTERS,
+            "five_year_comparison_inflation_quarters": INFLATION_DURATION_QUARTERS,
+            "selected_stabilizing_inflation_quarters": len(post_backstop_baseline),
             "inflation_rate_response": "none while the rate cap is imposed",
             "primary_deficit_treatment": "constant share of scenario GDP",
             "closure_target": (
@@ -481,8 +505,9 @@ def main() -> None:
             ),
         },
         "interpretation": (
-            "conditional arithmetic stress test, not a forecast of Federal Reserve, "
-            "Congressional, investor, or household behavior"
+            "conditional Treasury-cohort arithmetic; Federal Reserve implementation, "
+            "investor demand, and behavioral macroeconomic responses remain outside "
+            "the experiment"
         ),
     }
     (CONFIG_DIR / "monetary_backstop_2036.json").write_text(

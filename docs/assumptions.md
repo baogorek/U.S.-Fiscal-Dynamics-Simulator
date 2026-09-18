@@ -1,5 +1,13 @@
 # Assumptions register
 
+The September 2026 [sustainability review](sustainability_review.md) adds separate
+no-shock diagnostics and macro sensitivity runs. Its fiscal closure starts in 2026Q4,
+ends in 2056Q3, and requires debt/GDP below its initial level and a nonpositive final-year
+change. Growth, inflation, and issuance rates remain at reference values during that
+closure. Alternative inflation persistence and private-credit pass-through are challenges
+to earlier assumptions, not new estimates. The constant-policy examples explicitly fix
+interest, growth, and the primary deficit; they are not post-2056 baseline projections.
+
 This register separates source observations from projections and model choices. No item
 below is an estimated behavioral relationship.
 

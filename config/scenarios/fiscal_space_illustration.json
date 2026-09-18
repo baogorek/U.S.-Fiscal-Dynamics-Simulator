@@ -1,0 +1,41 @@
+{
+  "environment": {
+    "nominal_growth": 0.04,
+    "anchor_interest_rate": 0.03,
+    "anchor_debt_gdp_ratio": 1.0,
+    "interest_slope": 0.01
+  },
+  "cases": [
+    {
+      "scenario": "convergent",
+      "initial_debt_gdp_ratio": 1.0,
+      "primary_deficit_gdp_share": 0.008,
+      "fixed_point_count": 2,
+      "terminal_debt_gdp_ratio": 0.8748163031966306
+    },
+    {
+      "scenario": "above_unstable_fixed_point",
+      "initial_debt_gdp_ratio": 1.6,
+      "primary_deficit_gdp_share": 0.008,
+      "fixed_point_count": 2,
+      "terminal_debt_gdp_ratio": 1.8555577289244949
+    },
+    {
+      "scenario": "no_fixed_point",
+      "initial_debt_gdp_ratio": 1.0,
+      "primary_deficit_gdp_share": 0.0125,
+      "fixed_point_count": 0,
+      "terminal_debt_gdp_ratio": 1.245154188856411
+    }
+  ],
+  "years": 80,
+  "maximum_steady_primary_deficit": 0.00961538461538462,
+  "debt_at_maximum_deficit": 1.0000000000000002,
+  "interpretation": "Illustrative annual fixed-point diagnostic; not calibrated to the US",
+  "limitations": [
+    "Rates are effective rates on the whole debt stock; maturities are omitted.",
+    "The affine rate schedule is supplied, not derived from investor optimization.",
+    "There is no fiscal reaction, price-level adjustment, or post-break regime selection.",
+    "Fixed-point stability applies to this annual map, not a forward-looking equilibrium."
+  ]
+}

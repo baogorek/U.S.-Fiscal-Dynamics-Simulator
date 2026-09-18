@@ -1,0 +1,695 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.88in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,booktabs,tabularx}
+\usepackage{xcolor,graphicx,pgfplots,caption,fancyvrb}
+\usepackage{hyperref}
+\pgfplotsset{compat=1.18}
+\definecolor{ink}{HTML}{193D52}
+\definecolor{rust}{HTML}{AC4D24}
+\hypersetup{colorlinks=true,urlcolor=ink,linkcolor=ink,citecolor=ink,
+  pdftitle={The Consequences of Continuing to Borrow},
+  pdfsubject={Fiscal pressure, inflation sensitivity, and the legacy of expensive debt}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\captionsetup{font=small,labelfont=bf,hypcap=false}
+\pgfplotsset{articleplot/.style={
+  width=\linewidth,height=2.35in,
+  axis lines=left, axis line style={black!45},
+  tick label style={font=\small},label style={font=\small},
+  scaled x ticks=false,xticklabel style={/pgf/number format/1000 sep={}},
+  xmin=2026,xmax=2057,xtick={2030,2040,2050,2056},
+  ymajorgrids=true,grid style={black!10},
+  legend style={draw=none,font=\small,fill=none},
+  legend cell align=left}}
+\newcommand{\src}[2]{\href{#1}{#2}}
+\newcommand{\pathfile}[1]{\nolinkurl{#1}}
+
+\begin{document}
+{\LARGE\bfseries\color{ink} The Consequences of Continuing to Borrow\par}
+\vspace{4pt}
+{\large Three findings about fiscal pressure, inflation, and the debt a crisis leaves behind\par}
+{\small September 6, 2026\par}
+\vspace{8pt}
+
+\textquotedblleft This won't end well\textquotedblright{} is not an explanation.
+If a government keeps borrowing to cover its spending and the interest on its
+existing debt, what actually happens? Does the debt eventually become
+manageable? Do prices spiral upward? Do investors demand higher rates, making
+the problem worse?
+
+The question becomes more interesting when we take politics seriously.
+Assume that, before sustained economic pain changes the political calculation,
+elected officials keep financing scheduled commitments rather than enact a
+major deficit-reduction package. Borrowing is the initial response. This does
+not mean that taxes, benefits, or other policies can never change. It means
+we should not make a crisis disappear by assuming that politicians prevent it.
+
+A useful answer separates what follows from accounting from what depends on
+economic behavior. A quarterly simulation, using U.S.\ budget projections and
+Treasury debt records, produces three findings: fiscal pressure can accumulate
+without a market panic; an inflation spiral is not a mechanical consequence of
+higher interest payments; and expensive borrowing can outlive the conditions
+that caused it.
+
+These are conditional findings, not a forecast of a crisis date. The relevant
+data, equations, assumptions, and reproduction instructions are in the appendix.
+No earlier article is needed.
+
+\section*{1. The pressure can build before anything dramatic happens}
+
+Start with the simplest useful equation:
+\[
+ \text{next debt}
+ =\text{current debt}+\text{primary deficit}+\text{interest}.
+\]
+The primary deficit is spending other than interest, minus revenue. Replacing
+a maturing bond with a new bond does not, by itself, increase the debt:
+one obligation replaces another. Borrowing to pay the interest or to finance
+additional spending does increase it.
+
+But a growing dollar amount is not sufficient evidence of a breakdown. The
+economy can grow too. Let \(b_t\) be debt divided by annual GDP, \(d_t\) the
+primary deficit divided by that year's GDP, \(i_t\) the average nominal interest
+rate on opening debt, and \(g_t\) nominal GDP growth. In a simple annual model,
+\begin{equation}
+ b_t=\frac{1+i_t}{1+g_t}b_{t-1}+d_t.
+ \label{eq:annual}
+\end{equation}
+\textquotedblleft Nominal\textquotedblright{} means measured in dollars,
+without removing inflation.
+
+This equation explains how continued borrowing can coexist with a stable debt
+burden. With a constant 3\% interest rate, 4\% nominal growth, and a primary
+deficit of 1\% of GDP, the debt ratio converges to 104\%:
+\[
+ \frac{1.03}{1.04}\times 1.04+0.01=1.04.
+\]
+At that ratio, both the debt and GDP grow 4\% a year. The government continues
+borrowing, including to pay interest, but its debt does not outgrow its income
+base. This is an arithmetic counterexample to inevitable collapse, not a
+prediction that investors will keep lending to the United States at those rates.
+
+Does a U.S.-based reference path show such a settling down? Not over the next
+30 years in this exercise. The simulation uses the Congressional Budget
+Office's February 2026 budget and economic projections, with explicit
+extensions described in Appendix A. It keeps scheduled commitments financed
+and adds no discretionary fiscal rescue.
+The inputs are a fixed projection vintage, not a continuously updated forecast.
+\src{https://www.cbo.gov/publication/62105}{[CBO, ten-year outlook]}
+\src{https://www.cbo.gov/publication/62044}{[CBO, long-term data]}
+
+Without an added rate shock, modeled debt held by the public rises from an
+opening 99.22\% of GDP to 172.77\% in the third quarter of 2056.
+It is still rising at the end.
+
+\begin{center}
+\begin{minipage}{0.94\linewidth}
+\begin{tikzpicture}
+\begin{axis}[articleplot,ylabel={Debt held by the public (\% of GDP)},
+  ymin=90,ymax=185,ytick={100,120,140,160,180}]
+\addplot[ink,very thick] table[x=plot_year,y=reference_debt_pct,col sep=comma]
+  {../data/processed/borrowing_article_plot_data.csv};
+\end{axis}
+\end{tikzpicture}
+\captionof{figure}{Fiscal pressure without an added shock.}
+{\footnotesize Own simulation, 2026Q4--2056Q3. End-quarter debt is divided by
+that quarter's annual-rate GDP. This is a reference projection, not a modeled
+test of investors' willingness to finance it.}
+\end{minipage}
+\end{center}
+
+The final year's arithmetic makes the mechanism visible. Across its last four
+quarters, primary deficits add 2.20 percentage points to the debt ratio;
+modeled interest adds 6.88 points; and nominal GDP growth removes 5.95 points.
+The net increase is 3.13 percentage points. Growth is doing substantial work.
+It is simply not doing enough to offset the new obligations.
+These are contributions to the change in the debt ratio, not three conventional
+annual budget shares; Appendix B gives the exact calculation.
+
+There is an important limit to this result. The reference path supplies
+borrowing rates and economic growth; it does not ask investors whether they
+will accept every future auction. It therefore cannot demonstrate that a
+shock-free path is economically feasible indefinitely. Nor does its rising
+endpoint prove that stabilization after 2056 is impossible.
+
+What it does establish is concrete: under these financing and growth
+assumptions, continued borrowing does not produce a stable debt ratio within
+the projection. No initiating panic is needed for the burden to grow.
+
+\section*{2. More interest income does not automatically mean an inflation spiral}
+
+Interest paid by the government becomes income for someone else. If recipients
+spend part of it, that spending can support demand. This suggests a troubling
+feedback: higher rates increase interest payments, those payments support
+spending and inflation, and the central bank raises rates again.
+
+But the existence of that channel does not determine its net effect. Some
+interest is saved or received abroad. Higher rates can also restrain borrowing,
+reduce spending, and lower the market value of existing bonds. The Bank for
+International Settlements discusses these competing income, credit, and
+valuation channels; it does not treat interest income as a sufficient
+explanation of the overall inflation response.
+\src{https://www.bis.org/publications/aer-2026/high-public-debt-shifting-financial-markets}
+{[BIS, 2026, chapter II]}
+
+To see why the distinction matters, consider two deliberately severe stress
+scenarios. Both add five percentage points to Treasury issuance rates for ten
+years, beginning in 2026Q4. Both also add two percentage points to private
+credit spreads for the first two years. Both let some additional interest
+income feed into spending, let the central bank respond to inflation and
+output, and continue financing the primary deficit. Neither adds a fiscal
+consolidation package.
+
+Change just one coefficient: how much of an inflation deviation survives into
+the next quarter.
+
+\begin{center}
+\begin{minipage}{0.94\linewidth}
+\begin{tikzpicture}
+\begin{axis}[articleplot,ylabel={Annualized inflation (\%)},
+  ymin=1,ymax=9.2,ytick={2,4,6,8},
+  legend pos=north west]
+\addplot[rust,very thick] table[x=plot_year,y=persistent_inflation_pct,col sep=comma]
+  {../data/processed/borrowing_article_plot_data.csv};
+\addlegendentry{98\% quarterly persistence}
+\addplot[ink,very thick,dashed] table[x=plot_year,y=faster_fading_inflation_pct,col sep=comma]
+  {../data/processed/borrowing_article_plot_data.csv};
+\addlegendentry{90\% quarterly persistence}
+\end{axis}
+\end{tikzpicture}
+\captionof{figure}{The same shocks, very different inflation paths.}
+{\footnotesize Own simulations. Inflation is annualized quarterly GDP-price
+inflation, not twelve-month consumer-price inflation. All parameters except
+inflation persistence are identical. The Treasury premium ends in 2036Q3;
+the private credit-spread shock ends in 2028Q3.}
+\end{minipage}
+\end{center}
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+ & \multicolumn{2}{c}{2056Q3 result}\\
+\cmidrule(lr){2-3}
+Quarterly inflation persistence & Inflation & Debt/GDP\\
+\midrule
+98\% & 8.04\% & 255.61\%\\
+90\% & 2.89\% & 259.92\%\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The second case does not merely postpone a large inflation spike: inflation
+never exceeds 3.15\% during the simulated period. Yet debt ends slightly
+higher relative to GDP than in the high-inflation case. In these experiments,
+avoiding sustained high inflation does not resolve the fiscal problem.
+
+The apparent smallness of the parameter change is misleading. In isolation,
+98\% quarterly persistence gives an inflation deviation a half-life of about
+8.6 years; 90\% gives it a half-life of about 1.6 years. These are substantially
+different assumptions about how the economy works. Neither coefficient has
+been estimated here, and the two paths are not a confidence interval.
+
+There is another limitation worth stating plainly. In these runs, the
+Treasury-specific premium raises federal financing costs but does not directly
+tighten private credit. Private restraint comes from the separate credit-spread
+shock and the policy-rate response. Bond-price losses and several other
+channels are also absent. Consequently, the high-inflation path is a
+conditional mechanism illustration, not evidence that higher Treasury yields
+would have that net effect in the actual economy.
+
+The lesson is not that inflation is harmless, or that debt is merely a number
+on paper. It is that paying interest is insufficient to derive an inflation
+spiral. The fiscal ledger tells us the payment. Economic assumptions determine
+what happens after the payment reaches its recipient.
+
+\section*{3. A recovery inherits the debt issued during the stress}
+
+Suppose sustained inflation, a recession, or financing stress eventually
+changes what voters and politicians will accept. Policy changes become
+possible. Market confidence improves, and borrowing rates fall.
+
+That improvement matters immediately for new borrowing. It does not rewrite
+the coupons on outstanding fixed-rate bonds. Treasury bonds pay their fixed
+rate until maturity.
+\src{https://www.treasurydirect.gov/marketable-securities/treasury-bonds/}
+{[TreasuryDirect, Treasury bonds]}
+
+The simplest example needs no macroeconomic simulation:
+\[
+ \$1\text{ trillion of fixed-rate debt at }8\%
+ \quad\longrightarrow\quad \$80\text{ billion of annual interest}.
+\]
+If the rate available on new bonds falls to 4\%, the existing obligation still
+pays \$80 billion a year while it remains outstanding. New debt of the same
+face value issued at par would pay \$40 billion. The Treasury cannot simply
+substitute the cheaper coupon. Buying back the old bond would require paying
+its market price, which reflects its valuable remaining payments.
+
+Actual federal debt mixes short-term bills, longer fixed-rate securities,
+floating-rate notes, and inflation-protected debt. Some costs adjust quickly;
+others persist. The simulation tracks those different instruments precisely
+because today's market yield and the average cost of the debt stock are not
+the same number. Appendix B describes that machinery. The fixed-coupon example
+establishes the carryover mechanism without assuming any particular recovery
+date or policy package.
+
+Continuing to borrow during stress can leave two legacies: more principal and
+high contractual payments on debt issued while rates were elevated. If those
+payments also have to be borrowed, they add further debt. Lower rates help,
+but recovery starts from that inherited balance sheet, not from the balance
+sheet the government had before the stress.
+
+This is not a claim that the cost is permanent or that every maturity strategy
+has the same outcome. Short maturities pass higher rates through quickly and
+also benefit sooner when rates fall. Long fixed-rate borrowing delays repricing
+but locks in the rate available when the bond is issued. The timing is part
+of the problem, not a detail that can be replaced with a single market yield.
+
+\section*{What we can say without pretending to know the ending}
+
+The relevant question is not whether the United States must run out of
+dollars on a calculable date. It is what happens to the debt burden, prices,
+financing conditions, and political choices while borrowing continues.
+
+This exercise gives a more specific answer than a warning that things will
+end badly. Under the reference assumptions, the debt burden keeps increasing
+even without an added shock. Under the specified rate stress, that burden
+becomes much larger whether inflation remains high or subsides. And if severe
+pain eventually prompts a response, the government still has to deal with the
+obligations accumulated before that response.
+
+It does not identify the probability of the stress, a debt ratio that triggers
+a run, or the point at which politics changes. The unadjusted paths describe
+continued borrowing, not a prediction that decades of distress would leave
+policy unchanged. They show consequences that a subsequent response would
+have to confront.
+
+The debt arithmetic is knowable. The ending depends on how the economy and
+politics respond. Useful scenarios make that dependence explicit, replacing
+a vague warning with an explanation.
+
+\clearpage
+\appendix
+{\Large\bfseries\color{ink} Appendix: the calculations behind the article\par}
+
+This appendix specifies the three runs used above. All reported scenario
+results are calculations from the accompanying simulator, not results claimed
+by CBO, Treasury, or BIS. No separate crisis narrative, fiscal-reform scenario,
+or previous paper is required to interpret them.
+
+\section{Inputs, scope, and the three experiments}
+
+\textbf{Dates and units.}
+The simulation runs quarterly from 2026Q4 through 2056Q3, inclusive.
+Stocks and quarterly flows are in billions of nominal dollars. GDP is a
+seasonally adjusted annual rate (SAAR). Rates, output gaps, and GDP shares are
+decimals in the equations. Inflation is the annualized quarterly change in
+the GDP price level; TIPS use a separate CPI-based indexation input.
+
+\textbf{Starting balance sheet.}
+Treasury's September 30, 2025 Monthly Statement of the Public Debt supplies
+security-level maturities and instrument types. Marketable securities are
+scaled within each class to the statement's public holdings; auction records
+supply available effective-rate information, with coupon-rate fallback.
+Other publicly held debt is retained as a coarse aggregate. The stock is
+advanced under the reference assumptions through 2026Q3 before the experiments
+start. Opening debt is \$32,215.665 billion and opening annual-rate GDP is
+\$32,468.269 billion, giving 99.221998\%.
+\src{https://fiscaldata.treasury.gov/datasets/monthly-statement-public-debt/}
+{[Treasury, debt data]}
+\src{https://fiscaldata.treasury.gov/datasets/treasury-securities-auctions-data/}
+{[Treasury, auction data]}
+
+\textbf{Budget and economy.}
+The February 11, 2026 CBO vintage supplies the ten-year fiscal and quarterly
+economic inputs. The separate February 25 long-term release extends the
+budget and economy through 2056. CBO's baseline convention continues scheduled
+benefits beyond trust-fund exhaustion; its payable-benefits alternative
+differs. Thus the article studies financing scheduled commitments, not literal
+legislative inaction under every existing financing restriction.
+\src{https://www.cbo.gov/publication/62105}{[CBO, appendices B and C]}
+\src{https://www.cbo.gov/publication/62044}{[CBO, long-term release]}
+
+Annual primary deficits are split into four equal nominal fiscal quarters.
+For post-2036 annual economic levels, constant within-year quarterly growth is
+chosen so the mean of the four levels matches the supplied annual level.
+This is done for nominal and real GDP and the GDP and CPI price levels.
+Quarterly Treasury issuance-rate inputs after 2036 are held at the final
+ten-year values. Other financing adjustments are set to zero after FY2036
+because the long-term input does not supply them. These two extensions are
+modeling choices, not additional CBO forecasts. The February 25 release
+excludes the effects of the February 20 tariff ruling; this exercise does not
+refresh that vintage.
+\src{https://www.cbo.gov/publication/62044}{[CBO, release scope]}
+
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{@{}lXXX@{}}
+\toprule
+Setting & Reference & Persistent inflation & Faster-fading inflation\\
+\midrule
+Treasury premium & None & 5 pp, first 40 quarters & Same\\
+Private credit spread & None & 2 pp, first 8 quarters & Same\\
+Inflation persistence \(\rho\) & 0.98 & 0.98 & 0.90\\
+Discretionary primary adjustment & None & None & None\\
+Debt-dependent yield feedback & Off & Off & Off\\
+Issuance-capacity ceiling & Off & Off & Off\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+All cases use the same price-stability policy rule and issuance strategy below.
+There is no imposed supply shock, default, buyback, yield cap, or incremental
+central-bank purchase program. All auctions are assumed to be financed at the
+specified rates. The code's numerical rate bounds never bind in these runs.
+The reference-relative feedback system has zero deviations without a shock;
+the no-shock case is therefore a fiscal projection, not an independently
+identified equilibrium of investor demand.
+
+\section{Debt accounting, maturities, and the no-shock calculation}
+
+Let \(B_t\) be closing publicly held debt, \(D_t\) the quarterly primary deficit,
+\(I_t\) modeled quarterly interest cost including TIPS principal compensation,
+and \(A_t\) other financing adjustments. In the selected runs,
+\begin{equation}
+ B_t=B_{t-1}+D_t+I_t+A_t.
+ \label{eq:ledger}
+\end{equation}
+The detailed ledger follows cohorts with principal, maturity quarter,
+instrument type, and coupon or effective rate. Each quarter, it indexes TIPS,
+resets floating rates, accrues interest on the inherited stock, and replaces
+maturing principal. New issuance at quarter-end starts accruing interest in
+the next quarter. Quarterly interest accrual approximates annual effective
+interest by one quarter of its annual amount; it is not a literal schedule of
+every semiannual coupon payment.
+
+For a nominal fixed-rate cohort of principal \(Q\) and effective annual rate
+\(y\), quarterly interest is \(Qy/4\). For a TIPS cohort, principal becomes
+\(Q'=Q(1+\pi^{\rm TIPS}_t)^{1/4}\); the change in principal is counted as
+inflation compensation and real-rate interest accrues on adjusted principal.
+Principal can decline with deflation; at maturity a floor protects original
+principal. Floating-rate notes reset to the short Treasury issuance rate plus
+their fixed spread. Treasury's instrument descriptions provide the underlying
+contractual conventions.
+\src{https://www.treasurydirect.gov/marketable-securities/tips/}{[TreasuryDirect, TIPS]}
+\src{https://www.treasurydirect.gov/marketable-securities/floating-rate-notes/}
+{[TreasuryDirect, floating-rate notes]}
+
+TIPS indexation increases the stock directly and is not also borrowed as a
+cash coupon. Net cash financing covers the primary deficit, non-indexation
+interest, and other financing needs. Gross issuance also includes refinancing
+maturing principal. Other publicly held debt, initially \$582.764 billion,
+has no modeled maturity schedule and accrues interest using the supplied
+CBO average-debt-rate input.
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrrl@{}}
+\toprule
+New debt type & New borrowing share & Tenor (quarters) & Reference rate\\
+\midrule
+Bills & 21.5411\% & 1 & CBO 3-month\\
+Notes & 51.8181\% & 28 & CBO 10-year\\
+Bonds & 17.2861\% & 80 & CBO 10-year\\
+TIPS & 7.0293\% & 40 & 1.75\% real\\
+Floating-rate notes & 2.3253\% & 8 & CBO 3-month + 0.10 pp\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Maturing principal is refinanced within its instrument type; the shares in
+the table allocate additional net borrowing. The tenors and coarse rate
+mapping are approximations, not a reconstruction of every future auction.
+Higher market yields affect newly issued debt and floating-rate resets, not
+the fixed coupons of outstanding nominal debt.
+
+\textbf{Exact debt-ratio decomposition.}
+Let \(Y_t\) be current quarterly annual-rate GDP. Subtracting the previous
+debt ratio from equation~\eqref{eq:ledger} gives
+\begin{equation}
+ \frac{B_t}{Y_t}-\frac{B_{t-1}}{Y_{t-1}}
+ =\underbrace{\frac{D_t}{Y_t}}_{\text{primary}}
+ +\underbrace{\frac{I_t}{Y_t}}_{\text{interest}}
+ +\underbrace{\frac{A_t}{Y_t}}_{\text{other}}
+ +\underbrace{B_{t-1}\left(\frac{1}{Y_t}-\frac{1}{Y_{t-1}}\right)}_{\text{growth}}.
+ \label{eq:decomposition}
+\end{equation}
+Summing these contributions over 2055Q4--2056Q3 and multiplying by 100 yields:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Contribution & Percentage points\\
+\midrule
+Primary deficits & \(+2.204807\)\\
+Modeled interest & \(+6.875718\)\\
+Other financing & \(0.000000\)\\
+Nominal GDP growth & \(-5.946338\)\\
+\midrule
+Change in debt/GDP & \(+3.134187\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Each term uses its own quarter's GDP denominator. In particular, the interest
+line is neither an annual flow divided by one annual GDP figure nor CBO's
+net-interest budget measure. Interest received by the Federal Reserve is
+included in the debt engine; the stress feedback is not a full consolidation
+of Treasury, reserve-interest expense, and Fed remittances.
+
+The article's 172.77\% endpoint also uses end-quarter annual-rate GDP.
+Using mean GDP over FY2056 instead gives approximately 175.06\% in this
+reference run. Denominator conventions explain why these two descriptions
+of the same modeled closing stock differ.
+
+\textbf{The stable-borrowing example.}
+For the annual abstraction, set \(A=0\), \(I=iB_{t-1}\), \(D=dY_t\), and
+\(Y_t=(1+g)Y_{t-1}\). Equation~\eqref{eq:ledger} then gives
+equation~\eqref{eq:annual}. With fixed \(g>i>-1\), its stable fixed point is
+\[
+ b^*=\frac{d(1+g)}{g-i}.
+\]
+The distance from that fixed point shrinks by \((1+i)/(1+g)\) each year.
+The 104\% example assumes rates and growth do not deteriorate as debt rises;
+it is not an estimated financing schedule or a welfare assessment.
+
+\section{The macroeconomic feedback used in the stress cases}
+
+A superscript \(0\) denotes the no-shock reference path. Let \(x_t\) be the
+fractional output gap relative to reference real output, \(\pi_t\) annualized
+inflation, and \(e_t=\pi_t-\pi^0_t\). The experiments begin with \(x=e=0\).
+The coefficients below are illustrative assumptions, not estimated causal
+effects.
+
+\subsection*{GDP and the primary deficit}
+
+Write \(R_t\) for real GDP and \(Y_t\) for nominal GDP. If
+\(r^0_t\) is the annualized reference real growth rate, then
+\begin{align}
+ R_t&=R_{t-1}(1+r^0_t)^{1/4}
+       \frac{1+x_t}{1+x_{t-1}},\\
+ Y_t&=Y_{t-1}(1+r^0_t)^{1/4}
+       \frac{1+x_t}{1+x_{t-1}}(1+\pi_t)^{1/4}.
+\end{align}
+Let \(Y^{\rm pot}_t\) follow the same reference real growth and scenario
+inflation but omit the output-gap factor. The primary deficit is
+\begin{equation}
+ D_t=D^0_t\frac{Y_t}{Y^0_t}-0.45\,x_t\frac{Y^{\rm pot}_t}{4}.
+ \label{eq:primary}
+\end{equation}
+Thus the reference primary deficit scales with scenario nominal GDP, with
+an automatic-stabilizer adjustment that reduces the deficit when output is
+above reference and increases it when output is below. There is no
+discretionary fiscal correction. This aggregate rule is not a
+program-by-program model of benefit indexation, medical costs, or tax brackets
+under sustained high inflation.
+
+\subsection*{Policy rates and Treasury rates}
+
+Let \(a_t\) be the policy-rate adjustment relative to reference and let
+\(q^0_t\) denote the reference short rate:
+\begin{align}
+ a_t&=0.5a_{t-1}+0.5(1.5e_t+0.5x_t),\qquad a_{-1}=0,\\
+ q_t&=\operatorname{clip}(q^0_t+a_t,\,0,\,0.99),\\
+ u_t&=(q_t-\pi_t)-(q^0_t-\pi^0_t).
+\end{align}
+The demand equation uses \(u_t\) as a proxy for real monetary tightening,
+based on current inflation rather than modeled inflation expectations.
+Although the policy configuration labels a 2\% inflation target, the active
+reaction here is to deviations from \(\pi^0_t\).
+
+The Treasury premium \(h_t\) equals 0.05 for the first 40 stress quarters and
+zero thereafter. New issuance rates are
+\begin{align}
+ y^{\rm short}_t&=\operatorname{clip}(q_t+h_t,\,0,\,0.99),\\
+ y^{\rm note}_t&=\operatorname{clip}(y^{0,\rm note}_t+0.75a_t+h_t,\,0,\,0.99),\\
+ y^{\rm bond}_t&=\operatorname{clip}(y^{0,\rm bond}_t+0.50a_t+h_t,\,0,\,0.99),\\
+ y^{\rm TIPS,real}_t&=\operatorname{clip}(0.0175+0.50a_t+h_t,\,-0.99,\,0.99).
+\end{align}
+Floating-rate resets use \(y^{\rm short}_t\) plus the cohort's spread.
+The coarse other-debt aggregate retains its supplied average rate.
+For TIPS indexation, the reference lagged CPI inflation input is increased by
+\(e_{t-1}\), initially zero. Using the GDP-inflation deviation as the CPI
+deviation is another approximation.
+
+\subsection*{Interest recipients and the demand impulse}
+
+The spending fractions apply to incremental modeled cash interest, not
+to all debt issuance or all accumulated wealth:
+\begin{center}
+\small
+\begin{tabular}{lrr}
+\toprule
+Recipient & Allocated share & Fraction spent on domestic demand\\
+\midrule
+Domestic private sector & 56.8805\% & 25\%\\
+Foreign holders & 28.9732\% & 5\%\\
+Federal Reserve & 14.1463\% & 0\%\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The allocation uses pinned CBO FY2026 debt and Fed-holding inputs and
+June 2026 Treasury International Capital foreign holdings. Different dates
+and valuation conventions make these shares proxies, not exact holder-by-holder
+cash-flow measurements. The spending fractions themselves are assumptions;
+zero for the Fed suppresses its direct consumption channel, not all possible
+fiscal or monetary effects of its balance sheet.
+\src{https://github.com/US-CBO/cbo-data}{[CBO, official data repository]}
+\src{https://ticdata.treasury.gov/resource-center/data-chart-center/tic/Documents/slt_table5.html}
+{[Treasury, foreign holdings table; pinned June 2026 observation]}
+
+The weighted domestic spending fraction is
+\[
+ w=(0.5688049586)(0.25)+(0.2897321139)(0.05)
+   +(0.1414629275)(0)=0.1566878454.
+\]
+Let \(C_t\) be the modeled cash-interest proxy, excluding the TIPS principal
+indexation accrual. The engine treats non-indexation effective interest cost
+as a quarterly cash flow, rather than using the actual coupon calendar.
+Define annualized incremental impulses
+\begin{align}
+ \Delta I_t&=w\left(\frac{4C_t}{Y_t}-\frac{4C^0_t}{Y^0_t}\right),\\
+ \Delta P_t&=\frac{4}{Y_t}
+   \left(D_t-D^0_t\frac{Y_t}{Y^0_t}\right).
+\end{align}
+Negative deviations are allowed. The roughly 15.67\% weight is not an estimate
+that this share of all federal interest payments necessarily becomes
+additional aggregate demand.
+
+\subsection*{Output and inflation dynamics}
+
+Let \(s_t=0.02\) for the first eight stress quarters and zero thereafter.
+The next quarter's output gap and inflation deviation are
+\begin{align}
+ x_{t+1}
+ &=0.80x_t-0.25u_{t-1}-0.15s_{t-1}
+     +0.80\Delta P_t+\Delta I_t, \label{eq:output}\\
+ e_{t+1}&=\rho e_t+0.06x_{t-1}. \label{eq:inflation}
+\end{align}
+Unavailable pre-start lags are zero. The first experiment uses \(\rho=0.98\);
+the sensitivity uses \(\rho=0.90\). For an isolated deviation with no new
+forcing, the half-life in years is
+\[
+ H(\rho)=\frac{\log(0.5)}{4\log(\rho)},
+ \qquad H(0.98)=8.5774,\quad H(0.90)=1.6447.
+\]
+For a constant externally held output gap, equation~\eqref{eq:inflation}
+would give \(e=0.06x/(1-\rho)\): \(3x\) versus \(0.6x\).
+This is an explanation of the coefficient's importance, not a solution of
+the full coupled system.
+
+Within each quarter, the engine advances GDP using the current gap and
+inflation, computes the primary deficit and policy response, services and
+refinances the debt, computes the two fiscal impulses, and then updates
+next-quarter output and inflation. A parallel reference ledger supplies
+the reference interest amounts.
+
+\textbf{What these equations omit.}
+The Treasury premium does not itself appear in
+equation~\eqref{eq:output}; its demand effect comes through interest income,
+while the distinct private spread and monetary response restrain demand.
+The system does not estimate debt-sensitive investor demand, an auction
+failure threshold, expected future fiscal policy, exchange-rate responses,
+private-capital accumulation, productivity damage, bondholder valuation
+losses, or endogenous political change. It is not a complete equilibrium
+model of household wealth and government liabilities. These omissions limit
+interpretation of both inflation and real activity, especially far from the
+reference path.
+
+\section{Reproduction and verification}
+
+The accompanying reproduction script runs only the three cases in this
+article and uses existing pinned inputs. From the project root:
+\begin{Verbatim}[fontsize=\small]
+uv run python scripts/reproduce_borrowing_article.py
+latexmk -pdf -cd -interaction=nonstopmode -halt-on-error \
+  docs/continuing_to_borrow.tex
+\end{Verbatim}
+An already installed project environment can instead run the script with
+\pathfile{.venv/bin/python}. Building the PDF also requires a LaTeX installation
+with PGFPlots. No network data refresh is part of the calculation.
+
+\textbf{Required input snapshots.}
+The following files are in \pathfile{data/processed/}:
+\begin{Verbatim}[fontsize=\small]
+cbo_baseline_fy_2026-02.csv
+cbo_economy_quarterly_2026-02.csv
+cbo_long_term_budget_fy_2026-02-25.csv
+cbo_long_term_economy_annual_2026-02-25.csv
+treasury_securities_2025-09-30.csv
+initial_conditions_2025-09-30.csv
+\end{Verbatim}
+The loader also reads two provenance manifests in \pathfile{data/metadata/}:
+\begin{Verbatim}[fontsize=\small]
+manifest_cbo-2026-02_treasury-2025-09-30.json
+manifest_cbo-long-term-2026-02-25.json
+\end{Verbatim}
+Recipient shares come from
+\pathfile{config/calibration/interest_recipient_shares_2026.json}.
+The manifests identify the official source files and normalization; the
+snapshots were retrieved on August 22, 2026. Source links in this article
+may subsequently show newer information.
+
+\textbf{Relevant implementation.}
+The script calls the existing \pathfile{src/debt_sim/} modules:
+\pathfile{data.py} and \pathfile{scenarios.py} prepare the inputs;
+\pathfile{instruments.py}, \pathfile{debt_stock.py}, and \pathfile{model.py}
+service and refinance the cohorts; \pathfile{crisis.py} implements the
+quarterly feedback described in Appendix C; \pathfile{policy.py} supplies
+the policy settings; and \pathfile{sustainability.py} supplies the exact
+debt-ratio decomposition. The appendix explains the selected mechanisms;
+the accompanying source and numerical snapshots supply exact replication.
+
+\textbf{Outputs.}
+All new outputs use the prefix \pathfile{data/processed/borrowing_article_}.
+The files \pathfile{paths.csv}, \pathfile{summary.csv}, and
+\pathfile{decomposition.csv} contain the quarterly runs, endpoint summaries,
+and reference debt-ratio contributions. The figures read
+\pathfile{plot_data.csv}. The exact 120-quarter reference inputs are written
+to \pathfile{reference_inputs.csv}. The file \pathfile{metadata.json} records
+all rule settings, shock paths, opening stocks, and SHA-256 fingerprints
+of the processed input snapshots, recipient configuration, reproduction
+script, and simulator Python modules.
+
+The script checks that the debt ledger reconciles within \(10^{-7}\) billion
+dollars, that the debt-ratio decomposition reconciles within \(10^{-10}\),
+that no numerical rate bound binds, and that discretionary fiscal adjustments
+remain zero. It verifies the following rounded endpoints rather than fitting
+parameters to obtain them:
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Run & Inflation, 2056Q3 & Debt/GDP, 2056Q3\\
+\midrule
+Reference & 2.06\% & 172.77\%\\
+Persistent inflation & 8.04\% & 255.61\%\\
+Faster-fading inflation & 2.89\% & 259.92\%\\
+\bottomrule
+\end{tabular}
+\end{center}
+These checks establish reproduction and accounting consistency, not empirical
+validation of the macroeconomic coefficients. The fixed-coupon example in
+Section 3 is direct multiplication and does not use an assumed recovery path.
+
+\end{document}

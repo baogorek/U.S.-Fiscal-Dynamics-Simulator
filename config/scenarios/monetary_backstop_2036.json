@@ -2,14 +2,15 @@
   "backstop": {
     "closure_target": "terminal debt/GDP no higher than its 2036Q3 inherited level and no more than a 0.1 percentage-point increase over the final four quarters",
     "end": "2046Q3",
-    "inflation_episode_quarters": 20,
+    "five_year_comparison_inflation_quarters": 20,
     "inflation_rate_response": "none while the rate cap is imposed",
     "primary_deficit_treatment": "constant share of scenario GDP",
     "rate_cap_definition": "new bill, note, bond, and TIPS issuance rates return immediately to the CBO baseline path; coupons on inherited debt remain unchanged",
+    "selected_stabilizing_inflation_quarters": 40,
     "start": "2036Q4"
   },
-  "experiment": "monetary backstop after a decade of fiscal pass-the-buck",
-  "interpretation": "conditional arithmetic stress test, not a forecast of Federal Reserve, Congressional, investor, or household behavior",
+  "experiment": "rate-cap and inflation paths after a decade of refinancing stress",
+  "interpretation": "conditional Treasury-cohort arithmetic; Federal Reserve implementation, investor demand, and behavioral macroeconomic responses remain outside the experiment",
   "model_version": "0.2",
   "pre_backstop": {
     "confidence_premium_basis_points": 500.0,

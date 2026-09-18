@@ -1,0 +1,1439 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=0.82in]{geometry}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{microtype}
+\usepackage{needspace}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage{placeins}
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots}
+\pgfplotsset{compat=1.18, /pgf/number format/1000 sep={}}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\definecolor{stressred}{RGB}{184,48,62}
+\definecolor{debtblue}{RGB}{48,105,152}
+\definecolor{policygold}{RGB}{185,124,24}
+\definecolor{quietgray}{RGB}{95,95,95}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\hypersetup{
+  pdftitle={A 500-Basis-Point Treasury Stress},
+  pdfauthor={U.S. Fiscal Dynamics Simulator}
+}
+
+\title{A 500-Basis-Point Treasury Stress\\
+\large When Refinancing, Inflation, and Financing Capacity Feed Back}
+\author{U.S. Fiscal Dynamics Simulator}
+\date{August 29, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Can the United States continue borrowing to finance primary deficits and rising interest
+expense indefinitely, or does the interaction eventually force a change in regime?  This
+paper asks that question with a family of quarterly scenarios produced by the same Treasury
+debt engine.  The main stress scenarios begin in 2026Q4 with a 500-basis-point premium on new
+Treasury issuance for ten years and a 200-basis-point private-credit spread for two years.
+Existing fixed-rate debt
+retains its coupon until maturity.  New interest expense is allocated to domestic private,
+foreign, and Federal Reserve holders; a configurable share enters demand; inflation affects
+the Federal Reserve policy rule; and policy rates feed back into subsequent Treasury
+interest.
+
+An artificial control sets the spending of stress-created interest to zero, isolating the
+Treasury refinancing arithmetic.  Mandatory quarterly clearing then keeps inflation near 2
+percent while debt held by the public reaches 252 percent of GDP in 2056.  The main case
+combines official 2026 holder shares with illustrative spending propensities: domestic private
+recipients spend 25 percent of incremental interest on domestic output and foreign recipients
+spend 5 percent.  Together, those assumptions send 15.67 percent of incremental cash interest
+into domestic demand.  A grid of Federal Reserve responses keeps inflation below a
+4-percent early-warning line through 2056 only when the effective spending share stays below
+10 percent.  At the main-case 15.67-percent share, inflation remains above 4 percent beginning
+in 2037Q3, passes 6 percent in 2048, and reaches 8.04 percent in 2056 while still rising.  A
+published debt--yield sensitivity accelerates the path: inflation remains above 8 percent
+beginning in 2051Q3, above 10 percent beginning in 2055Q1, and reaches 11.26 percent in 2056
+alongside a 19.92-percent policy rate.
+
+A finite aggregate financing-capacity rule supplies the second test.  Under its central
+sensitivity, required issuance exceeds 1.5 times reference capacity in 2040Q3, or 2039Q3
+when debt-dependent yields are active.  A tight 1.25-times ceiling binds in 2034Q3; a wide
+2.0-times ceiling remains slack through 2056.  The 4-percent date is the first warning in an
+inflation path that continues to accelerate.  The financing-capacity date is a hard model
+stop: automatic private placement has ended and a new fiscal, monetary, regulatory, or
+payment regime must begin.
+
+The paper then gives that break a conditional recovery.  The central private-clearing path
+ends 2039Q2 with inflation at 4.89 percent, debt at 178.82 percent of GDP, annualized interest
+expense at 20.49 percent of GDP, and the Fed's short-rate setting at 8.72 percent.  Beginning
+in 2039Q3, a joint settlement is assumed to lower marginal Treasury rates gradually, permit
+inflation to peak at 5.2 percent, and cause one year of negative 1-percent real growth.  The
+cohort solver finds that a permanent primary-balance improvement of 5.48 percent of GDP,
+phased in over four years, returns debt/GDP to 178.82 percent by 2056 and leaves it falling.
+Debt first peaks at 209.27 percent in 2043; interest expense declines to 8.88 percent of GDP
+and inflation to 2.5 percent by 2056.  The same favorable growth, inflation, and rate paths
+without the fiscal package end at 265.14 percent debt/GDP.  The recovery's macro and yield
+paths are declared assumptions; the required fiscal adjustment and Treasury cash flows are
+the computed results.  Business as usual breaks, but a joint settlement reached at the
+financing boundary prevents the later double-digit-inflation endgame.
+\end{abstract}
+
+\section{What would make federal borrowing break?}
+
+The parable in Peter and Andrew Schiff's \emph{How an Economy Grows and Why It Crashes}
+ends with foreigners acquiring claims on domestic wealth \cite{schiff}.  Ray Dalio describes
+debt cycles that culminate in monetization, inflation, domestic conflict, reserve-currency
+decline, and geopolitical change \cite{dalioChangingOrder,dalioDebtCycle}.  Those stories ask
+the question studied here: if the federal government repeatedly borrows to cover the primary
+deficit---the gap between noninterest spending and revenue---and an ever-larger interest bill,
+what eventually forces the process to change?
+
+\paragraph{One model, several scenarios.}
+This paper investigates that question with a quarterly computer model of U.S. Treasury debt.
+The model begins with a reconstructed 2026 stock of bills, notes, bonds, TIPS, and floating-
+rate notes.  In every quarter it calculates coupon and principal payments, refinances maturing
+securities, and issues additional debt for the primary deficit and cash interest.  It then
+connects that Treasury ledger to a simple economic loop: some interest payments become
+spending; spending affects output and inflation; the Federal Reserve raises rates in response;
+and those rates increase the cost of the next round of Treasury borrowing.
+
+The paper runs several scenarios through that common model.  The main stress scenarios add
+five percentage points to new Treasury yields from 2026Q4 through 2036Q3 and add two
+percentage points to private-credit rates for the first two years.  A no-shock comparison, an
+artificial zero-spending control, alternative bondholder-spending shares, a grid of Federal
+Reserve reactions, debt-dependent Treasury yields, and three buyer-capacity curves isolate
+different parts of the mechanism.  Each reported date belongs to one of these stated
+conditional scenarios.
+
+\paragraph{What can stop automatic rollover?}
+The Treasury ledger by itself can run forever.  If every auction is guaranteed to clear and
+the government may issue whatever amount balances its accounts, each quarter's financing need
+simply becomes debt carried into the next quarter.  Debt and interest can reach extraordinary
+levels while the program continues producing another number.  A meaningful breaking point
+therefore requires an economic limit outside the accounting identity.
+
+The first diagnostic tracks inflation control under the initiating stress.  Inflation moves
+freely while a Federal Reserve reaction rule raises rates in an attempt to return it toward
+the reference path near 2 percent.  For reporting, the paper marks the start of the first run
+lasting at least four consecutive quarters above 4 percent as an early warning that the rule
+is failing to pull inflation back.
+The economic severity comes from the subsequent path: whether inflation retreats or continues
+through 6, 8, and 10 percent while policy rates rise with it.
+
+The second diagnostic imposes a hard financing limit.  Gross issuance in a quarter
+must cover maturing principal as well as the primary deficit and interest.  The financing-
+capacity rule begins with the amount buyers absorb along the reference path.  Higher yields
+attract additional buyers until a specified maximum multiple of that reference amount is
+reached.  In the central curve, each 100-basis-point yield increase adds capacity equal to 5
+percent of reference issuance, up to a total capacity of 1.5 times the reference amount.  When
+required issuance exceeds that maximum, the simulation stops: the next quarter requires
+Federal Reserve purchases, fiscal adjustment, compulsory absorption, inflationary
+accommodation, or a change to promised payments.
+
+\paragraph{What the scenarios show.}
+The central macro result is a progressive loss of inflation control.  An artificial control that prevents
+stress-created interest from entering demand produces much more debt but little inflation.
+In the main case, domestic private recipients spend 25 percent of incremental interest on
+domestic output and foreign recipients spend 5 percent.  Weighting those rates by official
+holder shares sends 15.67 percent of incremental cash interest into domestic demand.  That
+share lies above the model's 9.5-to-10-percent early-warning threshold.  Inflation remains
+above 4 percent beginning in 2037Q3, above 6 percent beginning in 2048Q1, and reaches 8.04
+percent in 2056.  Raising rates eventually adds enough Treasury interest to reinforce the
+demand pressure, and every Federal Reserve rule tested at the main spending share ends with
+inflation pressure still rising.  Adding debt-dependent yields produces sustained inflation
+above 8 percent in 2051Q3 and above 10 percent in 2055Q1.
+
+The separate financing-capacity experiment supplies the hard break.  Its central curve stops
+the run in 2039Q3 when debt-dependent yields are active; tighter and wider curves
+move that date from 2034Q3 to beyond 2056.  The model therefore identifies the mechanisms
+that can end automatic debt rollover, while the dates remain conditional on spending and
+buyer-capacity parameters that still require empirical calibration.  CBO similarly emphasizes
+that the timing of a U.S. fiscal crisis depends on more than debt/GDP alone \cite{cboCrisis}.
+
+The recovery experiment asks what happens if Washington acts at that break instead of
+continuing the unchanged-policy path.  It gives the economy a short recession, holds
+inflation between 2.5 and 5.2 percent, and lets newly issued Treasury rates decline over
+several years as the settlement gains credibility.  Under those stated conditions, the
+cohort engine requires a permanent 5.48-percent-of-GDP primary-balance improvement phased in
+over four years.  Debt rises for another four years because high-coupon securities remain in
+the stock, peaks at 209 percent of GDP, and then declines to 179 percent in 2056.  The result
+still leaves an unprecedented debt burden and a transformed federal budget.  It also shows
+the size and duration of the adjustment that prevents the crisis from becoming the country's
+permanent economic regime.
+
+\section{Starting point and initiating stress}
+
+The experiment starts in \textbf{2026Q4}.  Opening debt held by the public is approximately
+\$32.2 trillion, or 99.2 percent of GDP.  The cohort ledger tracks bills, fixed-rate notes
+and bonds, Treasury Inflation-Protected Securities (TIPS), and floating-rate notes (FRNs) by
+principal, coupon, and maturity.  It also carries a coarse nonmarketable public-debt
+category.  The fiscal and economic reference paths come from CBO's February 2026 ten-year
+baseline and long-term extension \cite{cbo2026,cboLongTerm}.
+
+The initial stress adds five percentage points to each new-issuance rate for forty quarters.
+In 2026Q4, the bill rate therefore rises from 3.278 to 8.278 percent, the note and
+bond rate from 4.197 to 9.197 percent, and the TIPS real rate from 1.750 to 6.750 percent.
+FRNs reset from the higher bill reference rate plus their fixed spreads.  Existing notes and
+bonds keep their contractual coupons until maturity.  The premium disappears after 2036Q3;
+subsequent rate movements come from the policy and debt-yield rules.
+
+A 200-basis-point private-credit spread applies for the first eight quarters and enters the
+output equation directly as a temporary recessionary impulse.  A structural
+Treasury-to-mortgage pass-through lies outside the experiment.
+The 500-basis-point Treasury premium is also a scenario trigger.  It represents an outer-
+tail repricing large enough to test the system.  Its probability is unspecified, and the
+experiment treats it as a sensitivity rather than a 2026 auction forecast.
+
+\begin{center}
+\begin{tabular}{p{0.29\textwidth}p{0.61\textwidth}}
+\toprule
+Element & Treatment \\
+\midrule
+Horizon & 2026Q4 through 2056Q3; no terminal debt target. \\
+Treasury stress & 500 basis points on new issuance for forty quarters. \\
+Private-credit stress & 200 basis points for eight quarters. \\
+Inherited fixed-rate debt & Contractual coupons continue until maturity. \\
+Primary deficits & CBO reference path, scaled with scenario nominal GDP and adjusted by an
+aggregate automatic stabilizer. \\
+Inflation & Evolves freely from the reference path, persistence, and the lagged output gap;
+the model records the full path without a cap. \\
+Federal Reserve & A smoothed price-stability reaction changes the policy-rate proxy and
+passes through to new Treasury rates. \\
+Treasury financing & Cash interest, primary deficits, and maturing principal generate new
+issuance each quarter. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These rules govern the unresolved stress path.  The recovery experiment changes course in
+2039Q3.  It publishes a post-settlement path for growth, inflation, and marginal Treasury
+rates, then solves for the primary-balance improvement required to return debt/GDP to its
+2039Q2 level by 2056 and leave the ratio falling.  That terminal condition is explicit; it
+belongs only to the recovery solver, while the unresolved stress scenarios remain untargeted.
+
+The initiating rate shock reaches federal cash expense gradually.  Bills roll quickly and
+FRNs reset; fixed-rate securities reprice only as they mature.  Each quarter the model
+indexes TIPS, accrues interest, matures cohorts, refinances principal, and issues additional
+debt for the primary deficit and cash interest.  Securities issued at quarter-end begin
+adding interest in the next quarter.  This cohort structure is the accounting kernel shared
+by every experiment below.
+
+\section{How the stress unfolds}
+
+Markets never label a move an ``exogenous shock.''  Investors, politicians, and television
+anchors attach a story to it, even when they disagree about the underlying cause.  The
+datelines and news bulletins below place one plausible public history around a crisis and a
+recovery.  Through 2039Q2, bondholders spend 15.67 percent of their extra interest income on
+domestic output, a widening debt/GDP gap raises longer-term yields, and the central buyer
+curve requires progressively larger auction spreads.  The curve reaches its limit in
+2039Q3.  Washington then changes course: the Fed bridges the market, Congress enacts a
+four-year fiscal package, and marginal Treasury rates decline as the package gains
+credibility.
+
+The recovery is conditional in a precise way.  Its quarterly paths for inflation, real
+growth, and new Treasury rates are published assumptions.  The cohort engine determines how
+the inherited securities refinance, how much interest they generate, and how debt evolves.
+It also solves for the permanent primary-balance improvement required to return debt/GDP to
+its pre-settlement level by 2056 with the ratio falling.  The people, legislation, market
+reactions, and quotations in the chronology are invented.  The numerical statements before
+the settlement come from the sequential crisis run; those after it come from the conditional
+recovery run.
+
+In this history, the panic begins when budget negotiations collapse just before Treasury
+exhausts its borrowing authority.  Moody's, which lowered the United States from Aaa to Aa1
+in May 2025, announces a second one-notch cut, from Aa1 to Aa2 \cite{moodysUS}.  A poorly
+received Treasury auction then leaves dealers holding far more securities than planned.
+The stress test fixes the combined repricing at five percentage points.  The downgrade, legal
+threat, and auction seizure supply the public explanation for an outer-tail move of that
+imposed size: investors suddenly demand compensation for payment delay, inflation, and the
+danger that a seized-up market will leave them unable to resell Treasuries.
+
+\paragraph{Wednesday, October 14, 2026---the break.}
+
+\begin{quote}
+\small\itshape
+Breaking News, 4:18 p.m.: A Treasury auction has cleared only after the largest one-day
+yield increase in modern market history.  The selloff follows the collapse of congressional
+budget talks and Moody's downgrade of the United States from Aa1 to Aa2.  The White House
+says every federal payment will be honored.  Banks are repricing mortgages and corporate
+credit tonight.
+\end{quote}
+
+Within days, buyers demand five additional percentage points to hold newly issued Treasury
+debt.  The bill rate jumps from 3.278 to 8.278 percent; note and bond rates jump from 4.197 to
+9.197 percent.  Private-credit rates rise by two percentage points as banks and bond investors
+reprice newly quoted dollar loans.  Stocks sell off because Treasury yields form the base
+discount rate used to value future corporate earnings: adding five percentage points lowers
+the present value of those earnings, while dearer private credit points toward less
+investment and lower profits.  Existing bonds also fall in market value, imposing immediate
+losses on banks, funds, and leveraged holders.  Lenders pull mortgage rate sheets while they
+reprice, and nightly news panels debate whether the United States is insolvent or merely
+politically incapable of governing itself.  These asset-price reactions belong to the
+invented news history; the macro equation receives only the stated two-point private-credit
+spread.
+
+The federal interest bill moves slowly.  Old notes and bonds still carry their contractual
+coupons, so bills, floating-rate notes, and the first newly issued securities take the blow.
+Inflation ends December at 2.37 percent and debt held by the public at 99.65 percent of GDP.
+To most households, this still looks like a violent financial-market event rather than a
+federal budget emergency.
+
+\paragraph{Thursday, December 12, 2030---the headlines declare victory too soon.}
+
+\begin{quote}
+\small\itshape
+Evening News: Inflation is back near 2 percent and private borrowing has begun to recover.
+Administration officials say the economy has absorbed the Treasury shock.  A quieter number
+in today's budget report shows federal interest expense above 8 percent of GDP.
+\end{quote}
+
+Bills have rolled repeatedly, and progressively larger cohorts of notes and bonds have
+matured.  Treasury replaces them at crisis rates while also borrowing to cover the primary
+deficit and the larger interest bill.  Debt reaches 116.28 percent of GDP.  During this
+quarter, the higher-rate debt generates \$420 billion more cash interest than the economy
+would have seen without the panic.  Bondholders spend \$65.9 billion of that additional
+income on domestic output.  Interest expense reaches 8.36 percent of annualized GDP while
+inflation is still only 2.21 percent.  The widening debt gap has also added 33 basis points
+to the long-bond rate.  The apparent calm conceals a much more expensive debt stock.
+
+\paragraph{Thursday, September 18, 2036---the feedback becomes visible.}
+
+\begin{quote}
+\small\itshape
+Market Close: Treasury bill rates have reached 11.75 percent after the Federal Reserve's
+latest increase.  Inflation is 3.77 percent.  Lawmakers are demanding lower rates while Fed
+officials warn that cutting now would reignite price growth.
+\end{quote}
+
+The private-credit recession has faded, but the federal interest transfer is now supporting
+demand.  The Fed's short-rate setting has reached 6.75 percent.  The original five-point crisis
+premium still sits on top, producing an 11.75-percent bill rate.  The debt--yield response
+adds another 1.37 percentage points to the long-bond rate, which reaches 12.57 percent.  Each
+Fed increase depresses homebuilding, business investment, and consumer credit; it also raises
+the coupon Treasury promises when the next security is sold.
+
+Debt has reached 154.83 percent of GDP.  Interest expense absorbs 15.99 percent of annualized
+GDP and the total deficit is 17.06 percent of GDP.  During this quarter alone, stress-created
+interest sends another \$222 billion into domestic demand.  The central bank is pressing the
+brake while the Treasury interest bill is pressing the accelerator.
+
+\paragraph{Wednesday, October 1, 2036---Washington removes the panic premium.}
+
+\begin{quote}
+\small\itshape
+Breaking News: Congress has replaced recurring debt-limit votes with permanent borrowing
+authority for obligations already enacted.  The Federal Reserve has announced a standing
+Treasury-market facility intended to prevent another auction seizure.  Treasury yields fall,
+but dealers warn that the volume of securities still coming to market is overwhelming
+traditional buyers.
+\end{quote}
+
+This is why the extra five percentage points disappear in this history.  Congress removes
+the recurring legal threat to payment, and the Fed reduces the risk that dealers will be
+left without market liquidity.  The five-point premium vanishes, but a 3.70-point auction-
+clearing spread takes its place as Treasury asks private buyers to absorb ever more paper.
+The bill rate therefore falls only from 11.75 to 10.62 percent.  Washington has repaired the
+original panic while leaving the primary deficit and ten years of high-coupon debt in place.
+Inflation risk and financing pressure survive the rescue.
+
+\paragraph{Thursday, September 17, 2037---the Fed raises rates again.}
+
+\begin{quote}
+\small\itshape
+Fed Raises Benchmark Again: With inflation moving above 4 percent, the central bank has
+lifted its short-rate setting to 7.41 percent.  Officials say high real borrowing costs will
+cool demand, but acknowledge that rising Treasury interest payments are weakening the effect.
+\end{quote}
+
+The Fed has continued tightening after the panic premium vanished: its short-rate setting
+reaches 7.41 percent one year later.  Its reaction rule
+responds to inflation with gradual quarterly adjustments rather than a single enormous move.
+Officials expect the usual channel---dearer mortgages, auto loans, and corporate credit---to
+cool spending without causing a depression.
+
+That channel is working, but another one is pushing the other way.  Treasury must refinance
+at the Fed's higher rates, and bondholders spend part of the resulting interest income.  Debt
+has reached 163.40 percent of GDP and interest expense is 17.10 percent of GDP.  The bill
+rate offered to buyers is 11.33 percent after the market-clearing spread.  September
+begins a run of at least four consecutive quarters above 4 percent inflation.  The Fed keeps
+raising rates in this history.  Its dilemma is already visible: every increase removes some
+private demand now and adds to federal interest income as Treasury refinances later.
+
+\paragraph{Thursday, June 16, 2039---the market reaches the edge.}
+
+\begin{quote}
+\small\itshape
+Treasury Buyers Demand 13-Percent Bill Rates: The government expects to sell \$26.6 trillion
+of securities this quarter, including repeated refinancing of short-term debt.  Dealers say
+the autumn financing calendar could exceed the amount private portfolios can absorb at any
+yield contemplated by current policy.
+\end{quote}
+
+Inflation is 4.89 percent, the Fed's short-rate setting is 8.72 percent, and the additional
+auction-clearing spread has reached 4.63 percentage points.  New bills yield 13.35 percent.
+Debt stands at 178.82 percent of GDP, interest expense at 20.49 percent of annualized GDP,
+and the total deficit at 21.20 percent.  Required issuance is already 1.488 times the
+reference amount under the paper's central buyer curve.
+
+That curve fails in the next quarter.  It can absorb \$27.303 trillion, while Treasury needs
+to place \$27.341 trillion, leaving \$37.4 billion without a private buyer.  The dollar
+shortfall is small beside the auction, but its meaning is large: another increase in yield
+has reached the curve's assumed capacity ceiling.  Borrowing the missing amount would add to
+the securities requiring buyers.  A temporary Federal Reserve facility can bridge the
+auction; permanent financing now requires lower primary borrowing, a larger captive buyer
+base, monetary accommodation, or changed payments.
+
+\paragraph{Thursday, September 15, 2039---Congress chooses the settlement.}
+
+\begin{quote}
+\small\itshape
+President Signs Four-Year Fiscal Accord; Fed Opens Temporary Treasury Facility: The law
+combines a broad consumption levy, additional income and payroll revenue, slower growth in
+retirement and health benefits, and limits on other spending.  Leaders of both parties say
+the package is intended to end emergency central-bank support by restoring private demand
+for federal debt.
+\end{quote}
+
+At full implementation, the law improves the primary balance by 5.48 percent of GDP relative
+to the previous path.  The change arrives in sixteen equal quarterly steps, spreading a
+fiscal adjustment with few peacetime U.S. precedents over four years.  The fictional law protects
+low-income transfers and public investment while distributing the remainder broadly; the
+simulator represents only its aggregate primary-balance effect.  Legislative scoring of the
+invented components would require a separate tax-and-benefit model.
+
+The Fed provides market liquidity while the first measures take effect, and the announced
+fiscal path brings private buyers back.  New bill, note, and long-bond rates fall to 8.50,
+9.00, and 9.00 percent.  Those rates are published recovery assumptions, followed by a
+gradual decline rather than an overnight return to normal.  The first-quarter fiscal
+improvement is only 0.34 percent of GDP.  Interest expense reaches 21.01 percent of GDP, the
+total deficit 22.36 percent, and debt 182.74 percent.  The rescue has stopped the auction
+seizure; years of high-coupon debt remain to be worked through.
+
+\paragraph{Thursday, September 20, 2040---the price of stabilization.}
+
+\begin{quote}
+\small\itshape
+Inflation Peaks at 5.2 Percent During Second Year of Contraction: Unemployment is rising,
+households are absorbing the new tax system, and Congress has rejected proposals to suspend
+the fiscal accord.  Treasury bill rates have declined to 7.5 percent.
+\end{quote}
+
+Real GDP is contracting at a 1-percent annual rate and inflation reaches the recovery path's
+5.2-percent peak.  The fiscal improvement has reached 1.71 percent of GDP, enough to bring
+the primary budget approximately into balance.  Interest from the inherited stock still
+equals 19.67 percent of GDP, leaving a 19.61-percent total deficit and debt at 195.42 percent
+of GDP.  The public sees a recession, higher taxes, slower benefit growth, and continuing
+inflation at the same time.  The political bargain survives because the Fed's bridge is
+temporary, payments continue, and each quarter's new debt carries a lower rate than the
+stock it is beginning to replace.
+
+\paragraph{Thursday, June 18, 2043---debt peaks after the crisis has ended.}
+
+\begin{quote}
+\small\itshape
+Debt Reaches 209 Percent of GDP, Yet Treasury Yields Fall Again: Budget officials report a
+3.9-percent primary surplus and say the debt ratio is at its turning point.  Inflation has
+declined to 4.3 percent and real growth has recovered above 2 percent.
+\end{quote}
+
+The fiscal package is now fully phased in.  New bills yield 5.24 percent and long bonds 6.04
+percent, while the inherited marketable stock still carries an average effective rate of
+7.81 percent.  Interest expense is 17.24 percent of GDP.  The government therefore runs a
+13.37-percent total deficit even with the large primary surplus.  Debt/GDP nevertheless
+peaks at 209.27 percent: nominal output is growing fast enough, and new borrowing slowly
+enough, for the denominator to begin overtaking the debt stock.  Recovery means reversing
+the ratio's direction long before the nominal debt is repaid.
+
+\paragraph{Thursday, December 19, 2047---the emergency becomes a durable compact.}
+
+\begin{quote}
+\small\itshape
+Debt Ratio Falls for a Fourth Year as Inflation Recedes to 3.3 Percent: Congress renews the
+core budget rules after an election fought over how to divide the continuing primary surplus.
+The Federal Reserve reports that emergency Treasury support has ended.
+\end{quote}
+
+Debt has declined to 202.08 percent of GDP.  Interest expense remains enormous at 12.03
+percent of GDP, but the 3.95-percent primary surplus reduces the total deficit to 8.08
+percent.  Real growth is 1.94 percent, inflation is 3.34 percent, bills yield 4.56 percent,
+and long bonds 5.36 percent.  The consumption levy and benefit changes have become ordinary,
+unpopular features of federal policy.  Markets treat them as durable enough to finance the
+remaining deficit without the emergency facility.
+
+\paragraph{Thursday, September 14, 2056---America has recovered, with scars.}
+
+\begin{quote}
+\small\itshape
+Inflation Near 2.5 Percent as Debt Falls to Its 2039 Share of the Economy: Treasury reports
+another year of declining debt/GDP and no payment disruption since the crisis.  The federal
+interest bill remains close to 9 percent of GDP, preserving intense pressure on every budget.
+\end{quote}
+
+Debt ends at 178.82 percent of GDP and has fallen 2.55 percentage points during the preceding
+four quarters.  Inflation is 2.5 percent, real growth 1.7 percent, new bills yield 4.3
+percent, and long bonds 5.1 percent.  The average effective rate on the marketable stock has
+declined to 4.68 percent as the old crisis cohorts mature.  Interest expense is still 8.88
+percent of GDP.  A 4.03-percent primary surplus leaves a 4.85-percent total deficit that
+nominal growth can absorb while the ratio continues downward.
+
+Prices have risen 82 percent over the seventeen-year recovery window.  How nominal wages,
+asset values, taxes, and benefits divide that burden lies beyond these equations.  The
+relatively happy ending is narrow and concrete: auctions function, inflation returns near
+its old range, real output grows, no Treasury payment is missed, and the debt ratio has been
+turned.  America survives by replacing its former fiscal promises with a permanent compact
+large enough to support the debt it accumulated.
+
+\section{Where the crisis and recovery come from, in graphs}
+
+The first three figures show the unresolved stress path.  They explain the pressure that
+forces the 2039 settlement and show where the system goes when policy never changes.  The
+fourth figure begins at the regime switch and displays the conditional recovery.  Separating
+the two pieces preserves an essential distinction: the pre-settlement feedback is generated
+inside the sequential model, while post-settlement growth, inflation, and marginal yields
+are declared paths used to calculate the required fiscal closure and Treasury cash flows.
+
+\subsection*{The imposed shock gives way to self-sustaining rate pressure}
+
+The left panel of Figure \ref{fig:visual-rates} contains two scenario instructions and one
+calculated result.  The gold line supplies the 500-basis-point Treasury premium for ten years.
+The gray line supplies the 200-basis-point private-credit spread for two years.  The red line
+is produced inside the run: as debt/GDP rises above the no-shock path, the central debt--yield
+rule adds an increasing premium to long bonds.  By the time the original panic premium ends
+in 2036, the debt premium is already 137 basis points; it reaches 464 basis points by 2056.
+
+The right panel shows the rates paid on new securities.  Bills take the entire five-point
+shock and the full change in the Fed's short-rate setting.  Long bonds begin from a higher
+reference rate, receive the panic premium through 2036, and subsequently retain pressure from
+the widening debt ratio.  The sudden drop in 2036 is therefore visible without ending the
+long-run rise.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{groupplot}[
+  group style={group size=2 by 1, horizontal sep=1.15cm},
+  width=0.47\textwidth,
+  height=0.31\textwidth,
+  xmin=2026.5, xmax=2057,
+  xtick={2027,2036,2046,2056},
+  grid=major,
+  tick label style={font=\small},
+  label style={font=\small},
+  title style={font=\small\bfseries},
+  grid style={draw=gray!25},
+  legend style={font=\scriptsize, draw=none, fill=white, fill opacity=0.85,
+                text opacity=1}
+]
+\nextgroupplot[
+  title={Pressure added to market rates},
+  ylabel={Basis points},
+  ymin=0, ymax=550,
+  legend pos=south east
+]
+\addplot[policygold, very thick, const plot]
+  table[col sep=comma, x=plot_year, y=treasury_premium_bp]
+  {confidence_shock_central_plot_data.csv};
+\addlegendentry{Treasury shock: input}
+\addplot[quietgray, dashed, very thick, const plot, mark=*, mark size=1pt,
+         mark indices={0,1,2,3,4,5,6,7}]
+  table[col sep=comma, x=plot_year, y=private_credit_spread_bp]
+  {confidence_shock_central_plot_data.csv};
+\addlegendentry{Private-credit shock: input}
+\addplot[stressred, very thick]
+  table[col sep=comma, x=plot_year, y=debt_yield_long_bp]
+  {confidence_shock_central_plot_data.csv};
+\addlegendentry{Long-debt premium: result}
+
+\nextgroupplot[
+  title={Rates on newly issued debt},
+  ylabel={Percent},
+  ymin=0, ymax=22,
+  legend pos=north west
+]
+\addplot[black, dashed, thick]
+  table[col sep=comma, x=plot_year, y=policy_rate_pct]
+  {confidence_shock_central_plot_data.csv};
+\addlegendentry{Fed short-rate setting}
+\addplot[policygold, very thick]
+  table[col sep=comma, x=plot_year, y=bill_rate_pct]
+  {confidence_shock_central_plot_data.csv};
+\addlegendentry{Bills}
+\addplot[stressred, very thick]
+  table[col sep=comma, x=plot_year, y=long_rate_pct]
+  {confidence_shock_central_plot_data.csv};
+\addlegendentry{Long bonds}
+\addplot[quietgray, densely dotted, thick, forget plot]
+  coordinates {(2036.625,0) (2036.625,22)};
+\end{groupplot}
+\end{tikzpicture}
+\caption{The rate sequence in the unresolved stress path.  The two rectangular paths in the left
+panel are imposed stresses.  The rising red path and every rate in the right panel are
+calculated before any recovery settlement.  The vertical dotted line marks the removal of the
+five-point Treasury premium after 2036Q3.}
+\label{fig:visual-rates}
+\end{figure}
+
+\FloatBarrier
+
+\subsection*{Refinancing turns high new rates into a federal budget problem}
+
+Figure \ref{fig:visual-treasury} shows the slow-moving Treasury mechanism.  Only 27 percent
+of marketable debt has repriced by the end of the first shock quarter because old notes and
+bonds retain their coupons.  The repriced share exceeds 90 percent in 2035 and reaches 100
+percent in 2055.  This delay explains why the interest bill keeps climbing long after the
+initial market break.
+
+Debt rises from approximately 100 percent to 290 percent of GDP.  Interest expense and the
+total deficit converge near 46 percent of annualized GDP.  Interest expense slightly exceeds
+the total deficit at the endpoint because the primary balance has moved into a small surplus;
+the remaining deficit is entirely interest-driven.  Gross issuance rises even faster in
+dollar terms.  It includes every bill or other security sold to replace maturing principal,
+so the same short-term borrowing can appear several times during a year; the flow reaches
+\$194.9 trillion in 2056Q3, while the debt stock increases only by the net financing need.
+
+\begin{figure}[p]
+\centering
+\begin{tikzpicture}
+\begin{groupplot}[
+  group style={group size=2 by 2, horizontal sep=1.15cm, vertical sep=1.15cm},
+  width=0.47\textwidth,
+  height=0.28\textwidth,
+  xmin=2026.5, xmax=2057,
+  xtick={2027,2036,2046,2056},
+  grid=major,
+  tick label style={font=\small},
+  label style={font=\small},
+  title style={font=\small\bfseries},
+  grid style={draw=gray!25},
+  legend style={font=\scriptsize, draw=none, fill=white, fill opacity=0.85,
+                text opacity=1}
+]
+\nextgroupplot[
+  title={Debt held by the public},
+  ylabel={Percent of GDP},
+  ymin=90, ymax=310
+]
+\addplot[debtblue, very thick]
+  table[col sep=comma, x=plot_year, y=debt_gdp_pct]
+  {confidence_shock_central_plot_data.csv};
+
+\nextgroupplot[
+  title={Marketable debt repriced since the shock},
+  ylabel={Percent},
+  ymin=0, ymax=105
+]
+\addplot[policygold, very thick]
+  table[col sep=comma, x=plot_year, y=repriced_share_pct]
+  {confidence_shock_central_plot_data.csv};
+
+\nextgroupplot[
+  title={The federal interest bill and deficit},
+  ylabel={Percent of GDP, annualized},
+  ymin=0, ymax=52,
+  legend pos=north west
+]
+\addplot[stressred, very thick]
+  table[col sep=comma, x=plot_year, y=interest_gdp_pct]
+  {confidence_shock_central_plot_data.csv};
+\addlegendentry{Interest expense}
+\addplot[black, dashed, thick]
+  table[col sep=comma, x=plot_year, y=deficit_gdp_pct]
+  {confidence_shock_central_plot_data.csv};
+\addlegendentry{Total deficit}
+
+\nextgroupplot[
+  title={Securities sold each quarter},
+  ylabel={Trillions of dollars},
+  ymin=0, ymax=210
+]
+\addplot[debtblue, very thick, fill=debtblue, fill opacity=0.14]
+  table[col sep=comma, x=plot_year, y=gross_issuance_trillions]
+  {confidence_shock_central_plot_data.csv} \closedcycle;
+\end{groupplot}
+\end{tikzpicture}
+\caption{How refinancing transmits the rate stress into debt, interest expense, deficits,
+and auction volume.  Gross issuance is a flow that includes repeated replacement of
+maturing principal; debt held by the public is a stock.}
+\label{fig:visual-treasury}
+\end{figure}
+
+\FloatBarrier
+
+\subsection*{Interest payments weaken the Fed's brake}
+
+The last set of panels closes the loop.  The first plots the portion of stress-created
+interest that domestic and foreign recipients spend on U.S. output each quarter.  That
+amount is 15.67 percent of the GDP-comparable incremental cash interest calculated by the
+parallel no-shock ledger.  It grows from nearly zero in 2026 to \$3.91 trillion in 2056Q3.
+
+The demand impulse initially only offsets part of the private-credit contraction.  It later
+pushes output above the reference path, as the middle panel shows.  Inflation consequently
+separates from the reference path in the right panel.  The Fed continues raising rates, but
+those rate increases feed the Treasury interest transfer shown here.  Inflation crosses 4
+percent in 2037, 6 percent in 2045, 8 percent in 2051, and 10 percent in 2055.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{groupplot}[
+  group style={group size=3 by 1, horizontal sep=0.82cm},
+  width=0.315\textwidth,
+  height=0.29\textwidth,
+  xmin=2026.5, xmax=2057,
+  xtick={2027,2041,2056},
+  grid=major,
+  tick label style={font=\scriptsize},
+  label style={font=\small},
+  title style={font=\scriptsize\bfseries},
+  grid style={draw=gray!25},
+  legend style={font=\scriptsize, draw=none, fill=white, fill opacity=0.85,
+                text opacity=1}
+]
+\nextgroupplot[
+  title={Interest entering demand},
+  ylabel={Trillions per quarter},
+  ymin=0, ymax=4.3
+]
+\addplot[policygold, very thick, fill=policygold, fill opacity=0.16]
+  table[col sep=comma, x=plot_year, y=domestic_demand_trillions]
+  {confidence_shock_central_plot_data.csv} \closedcycle;
+
+\nextgroupplot[
+  title={Output gap},
+  ylabel={Percent},
+  ymin=-0.3, ymax=7.3
+]
+\addplot[debtblue, very thick]
+  table[col sep=comma, x=plot_year, y=output_gap_pct]
+  {confidence_shock_central_plot_data.csv};
+\addplot[quietgray, densely dotted, thick, forget plot]
+  coordinates {(2026.5,0) (2057,0)};
+
+\nextgroupplot[
+  title={Inflation},
+  ylabel={Annual percent},
+  ymin=0, ymax=12.3,
+  legend pos=north west
+]
+\addplot[quietgray, dashed, thick]
+  table[col sep=comma, x=plot_year, y=reference_inflation_pct]
+  {confidence_shock_central_plot_data.csv};
+\addlegendentry{Reference}
+\addplot[stressred, very thick]
+  table[col sep=comma, x=plot_year, y=inflation_pct]
+  {confidence_shock_central_plot_data.csv};
+\addlegendentry{Stress path}
+\addplot[black, densely dotted, thick, forget plot]
+  coordinates {(2026.5,4) (2057,4)};
+\end{groupplot}
+\end{tikzpicture}
+\caption{The fiscal--monetary feedback in pictures.  Higher rates create additional cash
+interest; the assumed spendable share supports demand; output and inflation move above their
+reference paths; and the Fed responds with rates that make the next refinancing round more
+expensive.  The dotted line in the last panel is the paper's 4-percent early-warning level.}
+\label{fig:visual-feedback}
+\end{figure}
+
+\FloatBarrier
+
+\subsection*{The settlement bends the path slowly}
+
+Figure \ref{fig:visual-recovery} begins after the private-capacity warning.  The left panel
+shows why the rescue never feels miraculous: debt keeps rising for almost four years as the
+high-rate stock rolls forward, then turns down.  The dashed line applies the same assumed
+growth, inflation, and marginal-rate recovery without the fiscal package.  It reaches 265
+percent of GDP in 2056.  Restored confidence alone leaves the debt ratio climbing.
+
+The middle panel shows the two flows that make the turn possible.  The primary balance moves
+from deficit to a surplus near 4 percent of GDP while interest expense falls from 21 to 9
+percent as crisis cohorts mature.  The right panel displays the declared inflation and rate
+paths.  Their gradual normalization is an input to the recovery calculation, while the debt,
+interest, and required 5.48-percent fiscal adjustment are outputs of the cohort engine and
+closure solver.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{groupplot}[
+  group style={group size=3 by 1, horizontal sep=0.83cm},
+  width=0.315\textwidth,
+  height=0.30\textwidth,
+  xmin=2039.4, xmax=2057,
+  xtick={2040,2044,2050,2056},
+  grid=major,
+  tick label style={font=\scriptsize},
+  label style={font=\small},
+  title style={font=\scriptsize\bfseries},
+  grid style={draw=gray!25},
+  legend style={font=\scriptsize, draw=none, fill=white, fill opacity=0.85,
+                text opacity=1}
+]
+\nextgroupplot[
+  title={Debt after the settlement},
+  ylabel={Percent of GDP},
+  ymin=165, ymax=275,
+  legend pos=north west
+]
+\addplot[debtblue, very thick]
+  table[col sep=comma, x=plot_year, y=debt_gdp_pct]
+  {recovery_settlement_plot_data.csv};
+\addlegendentry{Fiscal settlement}
+\addplot[quietgray, dashed, thick]
+  table[col sep=comma, x=plot_year, y=no_fiscal_debt_gdp_pct]
+  {recovery_settlement_plot_data.csv};
+\addlegendentry{Rates normalize only}
+
+\nextgroupplot[
+  title={The budget turns gradually},
+  ylabel={Percent of GDP},
+  ymin=0, ymax=23,
+  legend pos=north east
+]
+\addplot[stressred, very thick]
+  table[col sep=comma, x=plot_year, y=interest_gdp_pct]
+  {recovery_settlement_plot_data.csv};
+\addlegendentry{Interest expense}
+\addplot[policygold, very thick]
+  table[col sep=comma, x=plot_year, y=primary_balance_gdp_pct]
+  {recovery_settlement_plot_data.csv};
+\addlegendentry{Primary surplus}
+
+\nextgroupplot[
+  title={Declared normalization path},
+  ylabel={Annual percent},
+  ymin=0, ymax=10,
+  legend pos=north east
+]
+\addplot[stressred, very thick]
+  table[col sep=comma, x=plot_year, y=inflation_pct]
+  {recovery_settlement_plot_data.csv};
+\addlegendentry{Inflation}
+\addplot[policygold, very thick]
+  table[col sep=comma, x=plot_year, y=short_rate_pct]
+  {recovery_settlement_plot_data.csv};
+\addlegendentry{Bills}
+\addplot[debtblue, dashed, thick]
+  table[col sep=comma, x=plot_year, y=long_rate_pct]
+  {recovery_settlement_plot_data.csv};
+\addlegendentry{Long bonds}
+\end{groupplot}
+\end{tikzpicture}
+\caption{The conditional recovery after the 2039 financing boundary.  The left panel
+compares the solved fiscal settlement with the same macro and rate assumptions absent the
+primary-balance improvement.  Inflation and marginal rates in the right panel are scenario
+assumptions; the cohort engine calculates the two debt paths and the interest path.}
+\label{fig:visual-recovery}
+\end{figure}
+
+\FloatBarrier
+
+\section{The sequential fiscal--monetary loop}
+
+The sequential experiment preserves a parallel no-shock Treasury ledger.  Only cash
+interest created by the stress enters the new demand channel.  Comparing interest as a
+share of scenario and reference GDP prevents a higher scenario price level from being
+mistaken for additional real purchasing power.
+
+The starting allocation of interest recipients uses approximate 2026 official aggregates.
+CBO reports \$32.095 trillion of FY2026 debt held by the public and \$4.540 trillion held by
+the Federal Reserve.  Treasury's June 2026 TIC table reports \$9.299 trillion of foreign
+holdings \cite{tic}.  The residual allocation is 56.88 percent domestic private, 28.97
+percent foreign, and 14.15 percent Federal Reserve.  The timing and valuation conventions
+differ, so these aggregates serve as benchmark shares.  A security-level ownership
+reconciliation lies outside this calibration.
+
+In the central case, domestic private recipients spend 25 percent of incremental cash
+interest on domestic output, foreign recipients spend 5 percent domestically, and the
+Federal Reserve share contributes nothing directly to demand.  The effective fraction is
+therefore
+\[
+m_I=(0.5688)(0.25)+(0.2897)(0.05)+(0.1415)(0)=0.1567.
+\]
+The domestic and foreign spending fractions remain scenario assumptions.  Research on the
+redistribution and interest-rate-exposure channels supports modeling heterogeneous marginal
+propensities to consume.  This experiment supplies the aggregate coefficient \cite{auclert}.
+The BIS likewise notes that higher government interest payments
+to private bondholders can support demand and weaken monetary transmission when public debt
+is high \cite{bisDebt2026}.
+
+Let $x_t$ be the output gap, $a_t$ the policy-rate adjustment relative to the reference path,
+$d^P_t$ the automatic-stabilizer primary-deficit impulse as a share of GDP, and $d^I_t$ the
+spendable incremental-interest impulse.  The central quarterly rule is
+\[
+x_{t+1}=0.80x_t-0.25\Delta r^{real}_{t-1}-0.15s^{private}_{t-1}
+        +0.80d^P_t+1.00d^I_t.
+\]
+Inflation is represented as a deviation from the CBO reference path:
+\[
+\pi_{t+1}=\pi^0_{t+1}+0.98(\pi_t-\pi^0_t)+0.06x_{t-1}.
+\]
+The policy adjustment follows
+\[
+a_t=0.50a_{t-1}+0.50\left[1.50(\pi_t-\pi^0_t)+0.50x_t\right].
+\]
+The short Treasury rate receives the full policy adjustment; notes receive 75 percent and
+long bonds and TIPS real rates receive 50 percent.  An output gap of $x_t$ changes the
+quarterly primary deficit by $-0.45x_t$ times annualized potential nominal GDP divided by
+four.  These equations make the mechanism reproducible.  Their coefficients are reduced-form
+sensitivities; a fully estimated U.S. macroeconomic model remains future work.
+
+\section{Does monetary tightening stop the loop?}
+
+Table \ref{tab:sequential} separates the accounting channel from the interest-income demand
+channel.  The 500-basis-point premium lasts ten years in every stress row.  The central and
+high-spending rows also include the temporary private-credit spread.
+
+\begin{table}[ht]
+\centering
+\caption{Sequential stress through 2056Q3}
+\label{tab:sequential}
+\small
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabularx}{\textwidth}{Yrcrrr}
+\toprule
+Scenario & \shortstack{Spendable\\interest share} &
+\shortstack{First sustained\\$>4\%$ warning} & \shortstack{2056\\inflation} &
+\shortstack{Peak policy\\rate} & \shortstack{2056\\debt/GDP} \\
+\midrule
+No shock & --- & none & 2.06\% & 3.28\% & 172.77\% \\
+Stress, zero-spending control & 0.00\% & none & 2.05\% & 3.28\% & 251.56\% \\
+Stress, central spending & 15.67\% & 2037Q3 & 8.04\% & 13.66\% & 255.61\% \\
+Stress, high spending & 31.34\% & 2033Q4 & 40.93\% & 78.21\% & 235.59\% \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The zero-spending control isolates the accounting channel from macroeconomic transmission.
+It sets every recipient's spending propensity to zero solely to measure what refinancing
+arithmetic can generate on its own.  Higher rates raise 2056 debt/GDP by almost 79 percentage
+points relative to the no-shock path, and peak interest expense reaches 13.43 percent of GDP.
+Inflation stays near the reference path while the mandatory-clearing engine continues placing
+the government's debt.
+
+The central spending row activates that missing route.  Interest income supports output;
+inflation rises; the Federal Reserve raises rates; new Treasury financing becomes more
+expensive; and the next interest transfer becomes larger.  By 2056, interest expense reaches
+28.72 percent of GDP and the total deficit reaches 29.40 percent.  Inflation pressure and
+debt/GDP are both still rising at the endpoint.
+
+The 2037Q3 date marks the first sustained warning.  The inflation problem then deepens.  In
+the central path, inflation remains above 6 percent beginning in 2048Q1 and reaches 8.04
+percent in 2056.  With the central debt--yield feedback, it remains above 8 percent beginning
+in 2051Q3, above 10 percent beginning in 2055Q1, and reaches 11.26 percent at the endpoint.
+
+The high-spending row is a nonlinear stress test.  Inflation enlarges nominal GDP enough to
+produce a lower 2056 debt ratio even as interest exceeds 112 percent of GDP.  The most extreme
+full-domestic-spending case reaches the model's 99-percent rate boundary and is excluded from
+the main table.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+\begin{groupplot}[
+  group style={group size=2 by 1, horizontal sep=1.15cm},
+  width=0.47\textwidth,
+  height=0.31\textwidth,
+  xmin=2026, xmax=2057,
+  xtick={2026,2036,2046,2056},
+  grid=major,
+  tick label style={font=\small},
+  label style={font=\small},
+  title style={font=\small\bfseries},
+  legend style={font=\scriptsize, draw=none, fill=none}
+]
+\nextgroupplot[
+  title={Annual inflation},
+  ylabel={Percent},
+  ymin=0, ymax=13,
+  legend pos=north west
+]
+\addplot[quietgray, dashed, thick, mark=square*] coordinates {
+  (2026.75,2.37) (2030.75,1.81) (2035.75,1.89) (2040.75,1.93)
+  (2045.75,2.04) (2050.75,2.03) (2055.75,1.99) (2056.50,2.05)
+};
+\addlegendentry{Zero-spending control}
+\addplot[debtblue, very thick, mark=*] coordinates {
+  (2026.75,2.37) (2030.75,2.21) (2035.75,3.48) (2040.75,4.87)
+  (2045.75,5.72) (2050.75,6.53) (2055.75,7.74) (2056.50,8.04)
+};
+\addlegendentry{Central spending}
+\addplot[stressred, very thick, mark=triangle*] coordinates {
+  (2026.75,2.37) (2030.75,2.21) (2035.75,3.50) (2040.75,5.03)
+  (2045.75,6.27) (2050.75,7.84) (2055.75,10.60) (2056.50,11.26)
+};
+\addlegendentry{Central + debt-yield feedback}
+\nextgroupplot[
+  title={Debt held by the public},
+  ylabel={Percent of GDP},
+  ymin=90, ymax=310
+]
+\addplot[black, dotted, thick, mark=o] coordinates {
+  (2026.75,99.62) (2030.75,107.30) (2035.75,117.50) (2040.75,128.90)
+  (2045.75,141.02) (2050.75,154.87) (2055.75,170.45) (2056.50,172.77)
+};
+\addplot[quietgray, dashed, thick, mark=square*] coordinates {
+  (2026.75,99.65) (2030.75,118.38) (2035.75,155.94) (2040.75,192.20)
+  (2045.75,212.22) (2050.75,230.15) (2055.75,248.91) (2056.50,251.56)
+};
+\addplot[debtblue, very thick, mark=*] coordinates {
+  (2026.75,99.65) (2030.75,116.26) (2035.75,148.19) (2040.75,180.33)
+  (2045.75,201.92) (2050.75,224.58) (2055.75,251.37) (2056.50,255.61)
+};
+\addplot[stressred, very thick, mark=triangle*] coordinates {
+  (2026.75,99.65) (2030.75,116.28) (2035.75,148.72) (2040.75,183.17)
+  (2045.75,210.01) (2050.75,241.64) (2055.75,283.27) (2056.50,290.47)
+};
+\end{groupplot}
+\end{tikzpicture}
+\caption{Sequential paths.  The left panel shows the interest-income demand channel and the
+additional debt-yield feedback.  The right panel shows that a lower debt ratio in an
+inflationary case can coexist with a more severe interest and price-stability problem.}
+\end{figure}
+
+\subsection*{The 4-percent early-warning frontier}
+
+The policy frontier varies the effective share of incremental interest entering demand and
+the Federal Reserve inflation-response coefficient.  For each spending share, the selected
+row minimizes the peak policy rate among paths that stay below the 4-percent warning line
+through 2056.  If every path crosses the line, the table reports the lowest peak inflation.
+
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+Interest to demand & Selected response & Below 4\% through 2056 & Peak inflation & Peak policy rate \\
+\midrule
+5.0\%  & 0.5 & yes & 3.42\% & 4.04\% \\
+8.0\%  & 1.0 & yes & 3.90\% & 5.29\% \\
+9.0\%  & 1.5 & yes & 3.99\% & 6.40\% \\
+9.5\%  & 3.0 & yes & 3.99\% & 9.39\% \\
+10.0\% & 2.5 & no  & 4.29\% & 9.26\% \\
+15.67\% & 0.5 & no & 6.96\% & 6.41\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The early-warning boundary in this grid lies between 9.5 and 10 percent.  Stronger
+tightening becomes counterproductive after the interest-transfer channel grows large enough:
+the policy rate suppresses private demand while raising the government's refinancing cost
+and the income paid to bondholders.  Even the positive-spending paths that stay below 4
+percent end with both inflation pressure and debt/GDP rising.  Their endpoint trends show
+that the Federal Reserve has postponed the warning without producing convergence by 2056.
+
+\section{Debt deterioration can sustain the rate pressure}
+
+The initiating premium disappears after ten years.  A second experiment lets the debt path
+itself affect later Treasury yields.  Bhatt, Diercks, Eyal, and Skaperdas estimate that a
+one-percentage-point increase in expected U.S. debt/GDP raises the longer-run neutral rate by
+about 1--2 basis points and the ten-year term premium by about 2--3 basis points
+\cite{fedDebtRates}.  The model applies lower, central, and upper translations to the lagged
+scenario debt/GDP gap relative to the parallel reference path.
+
+The central translation adds 1.5 basis points per debt-ratio point to note and TIPS real
+rates and 4 basis points per point to long-bond rates; bills receive no debt adjustment.  The
+source estimates expected debt effects.  The published estimate anchors the scale; this
+experiment supplies a one-quarter lag, a realized debt gap, and the maturity mapping.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Debt-yield sensitivity & 2056 inflation & Peak policy rate & 2056 debt/GDP & Long-yield addition \\
+\midrule
+None    & 8.04\%  & 13.66\% & 255.61\% & 0 bp \\
+Lower   & 10.12\% & 17.67\% & 278.54\% & 313 bp \\
+Central & 11.26\% & 19.92\% & 290.47\% & 464 bp \\
+Upper   & 12.59\% & 22.57\% & 303.80\% & 645 bp \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The feedback supplies an ongoing mechanism behind the one-time confidence label.  The
+initial shock creates a debt-ratio gap.  That gap raises subsequent financing rates within the
+published range.  Higher interest enlarges debt and spendable bondholder income, producing a
+larger gap in the next round.  A nonlinear jump associated with panic, currency loss, or an
+auction disruption lies outside the local empirical estimate and the current model.
+
+\section{A finite financing-capacity boundary}
+
+Mandatory placement keeps the path alive even at high yields.  The final experiment gives
+aggregate Treasury financing a finite capacity.  Let $Q_t$ be
+required gross issuance and $Q^0_t$ reference issuance scaled to scenario GDP.  Required
+capacity is $M_t=Q_t/Q^0_t$.  At an aggregate nominal yield gap $\Delta y_t$, supplied
+capacity is
+\[
+K_t=\min\!\left(\bar K,\;\max\!\left[0,1+\eta
+\frac{\Delta y_t}{100\text{ basis points}}\right]\right).
+\]
+The model iterates a common spread across issuance types until $K_t\ge M_t$.  When
+$M_t>\bar K$, no supported yield can place that quarter's issuance and the run stops.
+
+Three transparent sensitivities are reported.  The tight curve adds 2.5 percent of reference
+capacity per 100 basis points and stops at 1.25 times reference issuance.  The central curve
+adds 5 percent and stops at 1.5 times.  The wide curve adds 10 percent and stops at 2 times.
+These curves are illustrative sensitivities awaiting estimation from Treasury auctions.  The
+reference normalization includes ordinary institutional absorption implicit in the baseline;
+incremental Federal Reserve intervention is absent.
+
+\begin{table}[ht]
+\centering
+\caption{Conditional aggregate financing boundaries}
+\label{tab:capacity}
+\small
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabularx}{\textwidth}{p{0.21\textwidth}cp{0.18\textwidth}Y}
+\toprule
+Capacity & Debt-yield feedback & First capacity failure & Result at boundary or 2056 \\
+\midrule
+Tight, $\bar K=1.25$ & no  & 2034Q3 & \$5.1B beyond capacity \\
+Central, $\bar K=1.50$ & no & 2040Q3 & \$145.4B beyond capacity \\
+Wide, $\bar K=2.00$ & no & none & 65 bp peak clearing spread; 8.41\% inflation \\
+Tight, $\bar K=1.25$ & yes & 2034Q3 & \$11.1B beyond capacity \\
+Central, $\bar K=1.50$ & yes & 2039Q3 & \$37.4B beyond capacity \\
+Wide, $\bar K=2.00$ & yes & none & 10 bp peak clearing spread; 11.27\% inflation \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The central 2039Q3 result is the closest this model comes to the requested breaking point.
+At that date the debt-yield-feedback path requires \$27.341 trillion of gross quarterly
+issuance, including the refinancing of maturing principal, while the supplied central curve
+can absorb \$27.303 trillion.  The discrete
+quarter crosses the hard capacity by \$37.4 billion.  Debt-dependent yields reduce the
+separate clearing spread because they have already raised bond rates; the resulting interest
+cost nevertheless causes the hard capacity to be reached one year earlier.
+
+The next-quarter path at the boundary depends on a new regime: a central bank purchase,
+fiscal package, regulatory mandate, capital inflow, inflationary accommodation, or delayed
+payment.  Stopping the run makes that missing choice visible.
+Continuing to issue debt after the boundary would silently restore the unlimited-absorption
+assumption that the experiment was designed to test.
+
+\section{What a Federal Reserve backstop means}
+
+Competitive Treasury bidders set the auction's stop-out yield.  Federal Reserve rules exclude
+direct purchases of newly issued securities from Treasury and competitive auction bids
+\cite{fedTreasuryPurchases}.  SOMA can roll over maturing holdings through noncompetitive
+tenders.  Those tenders are add-ons to the announced offering and receive the stop-out yield
+established by competitive bids \cite{nyFedRollovers}.
+
+The Federal Reserve can support market functioning through repos and secondary-market
+purchases, as it did during the Treasury-market disruption of March 2020.  Such intervention
+can make an outright failed auction remote.  The auction yield and consolidated public-sector
+cost remain.  Purchases create reserve liabilities; a price-stability regime remunerates those
+reserves at the policy rate, changing the maturity of the public liability while preserving
+the consolidated interest expense.
+
+\Needspace{8\baselineskip}
+The capacity boundary should therefore trigger explicit alternatives:
+\begin{enumerate}
+\item \textbf{Price stability with fiscal closure.}  The Federal Reserve maintains the
+inflation response while Congress changes taxes or primary spending.
+\item \textbf{Sterilized market support.}  The Federal Reserve buys Treasuries for market
+functioning and continues paying the shadow policy rate on reserves.
+\item \textbf{Fiscal dominance or a yield cap.}  Treasury yields are suppressed while the
+inflation and credibility consequences enter the macro path.
+\item \textbf{Forced or subsidized absorption.}  Regulation, capital controls, guarantees,
+or balance-sheet mandates expand demand and reallocate the loss.
+\item \textbf{Payment disruption or restructuring.}  Contractual claims change after the
+other margins prove unavailable.
+\end{enumerate}
+The recovery chronology selects the first alternative and uses temporary market support as
+a bridge.  A separate run carries the central private-clearing path through 2039Q2 and starts
+the conditional fiscal closure in 2039Q3.  The assumed fall in marginal yields represents
+the combined effect of the facility and the enacted package; Federal Reserve purchases and
+reserve creation are outside that recovery ledger.  A future endogenous regime switch can
+replace those declared post-settlement paths with policy and investor behavior.
+
+\section{A conditional recovery after 2039}
+
+The recovery run inherits every Treasury cohort, its principal, coupon, and maturity from
+the last successful quarter of the central private-clearing path.  It then publishes the
+economic environment in which the settlement must work:
+
+\begin{center}
+\small
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabularx}{\textwidth}{p{0.30\textwidth}Y}
+\toprule
+Recovery element & Conditional treatment \\
+\midrule
+Inherited state & 2039Q2 debt/GDP 178.82 percent; inflation 4.89 percent; interest expense
+20.49 percent of GDP; Fed short-rate setting 8.72 percent. \\
+\addlinespace
+Real activity & Real growth of $-1$ percent through 2040Q3, followed by a recovery to 2.5
+percent and a gradual convergence to 1.7 percent in 2056. \\
+\addlinespace
+Inflation & Peaks at 5.2 percent in 2040Q3, then declines to 4.5 percent in 2042Q3,
+3 percent in 2050Q3, and 2.5 percent in 2056Q3. \\
+\addlinespace
+Marginal Treasury rates & Bills begin at 8.5 percent and long bonds at 9 percent, then
+decline gradually to 4.3 and 5.1 percent.  Inherited coupons remain unchanged until maturity. \\
+\addlinespace
+Fiscal instrument & Permanent improvement in the primary balance as a share of contemporaneous
+GDP, phased in linearly over sixteen quarters. \\
+\addlinespace
+Success condition & 2056Q3 debt/GDP no higher than its 2039Q2 level, with an increase of no
+more than 0.1 percentage point over the final four quarters. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The solver requires a 5.48-percent-of-GDP permanent primary-balance improvement.  Debt and
+interest continue rising at first because the government has already locked in crisis rates.
+The stock reaches 209.27 percent of GDP in 2043Q2, three years after inflation peaks.  The
+primary surplus is then 3.87 percent of GDP, new bill rates have fallen to 5.24 percent, and
+the debt ratio turns downward even though the total budget remains in deficit.
+
+By 2056Q3, the debt ratio has returned to 178.82 percent and is falling 2.55 percentage points
+per year.  Interest expense has declined from its 21.01-percent peak to 8.88 percent of GDP.
+Inflation is 2.5 percent, and the primary surplus is 4.03 percent of GDP.  Applying the same
+assumed growth, inflation, and rate normalization without the fiscal improvement produces
+265.14 percent debt/GDP in 2056.  A restored market and lower marginal yields therefore buy
+time; the durable primary adjustment turns that time into stabilization.
+
+The success condition deliberately determines the fiscal number.  Post-settlement growth,
+inflation, and yields are scenario choices.  The probability that Congress can enact the
+package and investors will reward it with the assumed rates remains unestimated.  The
+result is a conditional existence proof grounded in the actual inherited coupon structure:
+America can recover from the 2039 state under a package of this scale, while the recovery
+takes seventeen years and leaves interest expense far above its pre-crisis share.
+
+\section{How large are the adjustment alternatives?}
+
+The conditional recovery and earlier cohort experiments supply scale comparisons for fiscal
+and inflationary adjustment.  Each row carries the relevant inherited Treasury stock while
+holding its stated policy paths fixed.
+
+\begin{center}
+\small
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.38\textwidth}Y}
+\toprule
+Conditional adjustment & Model result \\
+\midrule
+Joint recovery beginning at the 2039 capacity boundary & 5.48-percent-of-GDP permanent
+primary-balance improvement phased in over four years; 2056 debt/GDP 178.82 percent and
+falling. \\
+\addlinespace
+Immediate permanent primary-balance improvement & 5.99 percent of GDP beginning in
+2026Q4 under the ten-year 500-basis-point stress. \\
+\addlinespace
+All adjustment assigned to a wage base equal to 42 percent of GDP & Static 14.25-point wage
+surcharge; approximately \$950 per month on an \$80,000 wage. \\
+\addlinespace
+Return new-issuance rates to baseline after the stressed 2036 stock is inherited & 2046
+debt/GDP reaches 227.6 percent and remains on an upward path. \\
+\addlinespace
+Five-year inflationary price-level reset after 2036 & Returns 2046 debt/GDP to 172.1 percent,
+while debt/GDP rises 3.37 points in the final year. \\
+\addlinespace
+Ten-year endpoint and trend stabilization after 2036 & Average GDP-price inflation
+of 5.38 percent and 38.64 percent more cumulative price growth than baseline, with new-
+issuance rates held near baseline. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The wage surcharge is a static incidence illustration.  Labor supply, avoidance, wage
+bargaining, consumption, and investment would change the revenue yield; CBO's analysis of
+large labor-tax adjustments shows that behavioral erosion can require rates to rise over
+time \cite{cboTaxStudy}.  A broader tax base, spending reductions, faster productivity
+growth, or a credibility-induced decline in the risk premium would distribute the adjustment
+differently.
+
+The inflation experiments distinguish a debt-level reset from flow stabilization.  A
+temporary price increase can lower debt/GDP while the primary and interest deficits continue
+to push the ratio upward.  The ten-year result works because nominal Treasury rates are held
+below the inflation path long enough to reduce the real return on nominal claims.
+Expectations, wage indexation, private credit, exchange rates, and the Federal Reserve balance
+sheet determine whether that rate--inflation configuration can be implemented.
+
+\section{What is anchored, and what remains assumed}
+
+The main quantitative conclusions depend on parameters of very different evidentiary
+quality.  Keeping them separate is essential.
+
+\begin{center}
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabularx}{\textwidth}{p{0.22\textwidth}YY}
+\toprule
+Component & Empirical or institutional anchor & Additional model choice \\
+\midrule
+Treasury stock & Security-level principal, coupon, maturity, TIPS, and FRN data &
+Representative new tenors and a fixed issuance mix. \\
+\addlinespace
+CBO path & Primary deficits, GDP, inflation, and Treasury-rate reference paths &
+Quarterly interpolation and post-2036 maturity mapping. \\
+\addlinespace
+Interest recipients & CBO Federal Reserve holdings and Treasury TIC foreign holdings &
+Aggregate residual allocation; holdings stay fixed. \\
+\addlinespace
+Debt--yield effect & Published 1--2 bp neutral-rate and 2--3 bp term-premium ranges &
+Lagged realized debt gap and maturity-specific translation. \\
+\addlinespace
+Interest demand & Redistribution and interest-exposure literature supports the channel &
+25-percent domestic and 5-percent foreign spending propensities. \\
+\addlinespace
+Macro feedback & Signs and lags reflect standard monetary and fiscal transmission &
+Reduced-form persistence, multipliers, and pass-through coefficients. \\
+\addlinespace
+Financing capacity & Reference gross issuance is observed in the model &
+Yield elasticities and 1.25, 1.5, and 2 times hard ceilings. \\
+\addlinespace
+Recovery settlement & Inherited 2039 cohorts and all subsequent Treasury cash accounting &
+Assumed growth, inflation, marginal yields, and a terminal stabilization condition. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The model omits endogenous expectations, exchange rates, capital flight, bank and dealer
+balance sheets, collateral spirals, maturity-specific investor demand, political response,
+default dynamics, and general equilibrium.  Crisis probability remains outside the model.  Its 99-
+percent rate cap is a numerical boundary; the extreme full-spending path reaches it and is
+reported only as a stress failure.
+
+These omissions cut in different directions.  Fiscal action or a credible monetary-fiscal
+package could reduce the premium and stop the loop.  Expectations, currency depreciation,
+forced selling, or a shrinking tax base could accelerate it.  The reported dates should move
+when the interest-spending and financing-capacity parameters are estimated more carefully.
+
+\section{Conclusion}
+
+The model answers the project's original question in four steps.  Treasury accounting can
+carry debt forward indefinitely whenever every auction is guaranteed to clear.  The
+zero-spending control demonstrates that property: debt reaches 252 percent of GDP while
+inflation stays near 2 percent.  An accounting ledger therefore cannot discover a national
+breaking point by itself.
+
+Economic feedback supplies the pressure missing from that ledger.  At the central
+15.67-percent spendable-interest share, inflation remains above 4 percent beginning in
+2037Q3 and reaches 8.04 percent in 2056.  Debt-dependent yields intensify the loop: the
+unchanged-policy path reaches 11.26 percent inflation and 290 percent debt/GDP.  Every tested
+Fed response at the central spending share leaves inflation pressure rising because higher
+rates eventually enlarge Treasury's interest transfer enough to work against private-demand
+restraint.
+
+Finite buyer capacity turns that pressure into an event.  The central curve reaches its
+limit in 2039Q3 when debt-dependent yields are active.  Tight and wide curves move the event
+from 2034Q3 to beyond 2056, exposing the importance of an empirical estimate for Treasury
+absorption.  At the boundary, continued business as usual has lost one of its hidden
+premises: private portfolios will no longer accept every additional security at some higher
+yield.
+
+The conditional recovery supplies the final step.  Washington bridges the 2039 auction,
+enacts a permanent 5.48-percent-of-GDP primary-balance improvement over four years, and earns
+a gradual normalization of marginal rates.  Inflation peaks at 5.2 percent and the economy
+contracts for a year.  Debt keeps rising to 209 percent of GDP in 2043 as inherited coupons
+work through the budget, then falls to 179 percent in 2056 with inflation at 2.5 percent.
+Interest expense remains 8.9 percent of GDP, so the recovered country still operates under a
+much tighter and more contentious fiscal compact.  Rate normalization without the fiscal
+package leaves debt at 265 percent of GDP under the same favorable macro assumptions.
+
+America survives this history because the regime changes before double-digit inflation and
+near-20-percent policy rates arrive.  The adjustment redistributes resources on a historic
+scale, leaves a higher price level and an unprecedented debt stock, and permanently narrows
+the federal government's choices.  It also preserves functioning auctions, positive real
+growth, declining inflation, and an improving debt ratio.  That relatively happy ending is
+available in the model, but delay makes it progressively larger, harsher, and less credible.
+
+\section*{Reproducibility}
+
+Run:
+\begin{verbatim}
+uv run python scripts/run_2026_household_scenario.py
+uv run python scripts/run_2036_monetary_backstop_experiment.py
+uv run python scripts/run_sequential_crisis_experiment.py
+uv run python scripts/run_sequential_policy_frontier.py
+uv run python scripts/run_debt_yield_feedback_experiment.py
+uv run python scripts/run_private_market_clearing_experiment.py
+uv run python scripts/run_recovery_settlement_experiment.py
+\end{verbatim}
+
+Scenario configurations are stored under \path{config/scenarios/}; the interest-recipient
+benchmark is \path{config/calibration/interest_recipient_shares_2026.json}; generated paths
+and summaries are under \path{data/processed/}.  The sequential, debt-yield, policy-frontier,
+and market-capacity outputs carry the corresponding experiment name in their filename.  The
+debt-yield experiment also exports all 120 quarters of the selected central path and its
+inflation reference to \path{docs/confidence_shock_central_plot_data.csv}; Figures
+\ref{fig:visual-rates}--\ref{fig:visual-feedback} read that file directly.  The recovery
+experiment exports \path{docs/recovery_settlement_plot_data.csv} for Figure
+\ref{fig:visual-recovery}.
+
+\begin{thebibliography}{99}
+
+\bibitem{cbo2026}
+Congressional Budget Office, \emph{The Budget and Economic Outlook: 2026 to 2036},
+February 2026.  \url{https://www.cbo.gov/publication/62105}.
+
+\bibitem{cboLongTerm}
+Congressional Budget Office, \emph{The Long-Term Budget Outlook Data: 2026 to 2056},
+February 2026.  \url{https://www.cbo.gov/publication/62044}.
+
+\bibitem{cboCrisis}
+Congressional Budget Office, \emph{Federal Debt and the Risk of a Fiscal Crisis}, 2010.
+\url{https://www.cbo.gov/publication/21625}.
+
+\bibitem{moodysUS}
+Moody's Ratings, ``2025 United States Sovereign Rating Action,'' May 16, 2025.
+\url{https://www.moodys.com/web/en/us/about-us/usrating.html}.
+
+\bibitem{cboTaxStudy}
+Congressional Budget Office, \emph{The Economic Effects of Financing a Large and Permanent
+Increase in Government Spending}, Working Paper 2021-03.
+\url{https://www.cbo.gov/publication/57021}.
+
+\bibitem{tic}
+U.S. Department of the Treasury, ``Table 5: Major Foreign Holders of Treasury Securities,''
+June 2026.  \url{https://ticdata.treasury.gov/resource-center/data-chart-center/tic/Documents/slt_table5.html}.
+
+\bibitem{fedDebtRates}
+Abhik Bhatt, Anthony M. Diercks, Benjamin Eyal, and Arsenios Skaperdas, ``The Causal Effect
+of Debt on Interest Rates,'' Finance and Economics Discussion Series 2026-031, Board of
+Governors of the Federal Reserve System, May 2026.
+\url{https://doi.org/10.17016/FEDS.2026.031}.
+
+\bibitem{fedTreasuryPurchases}
+Board of Governors of the Federal Reserve System, ``How Does the Federal Reserve's Buying
+and Selling of Securities Relate to the Borrowing Decisions of the Federal Government?,''
+updated July 2024.
+\url{https://www.federalreserve.gov/faqs/how-does-the-federal-reserve-buying-and-selling-of-securities-relate-to-the-borrowing-decisions-of-the-federal-government.htm}.
+
+\bibitem{nyFedRollovers}
+Federal Reserve Bank of New York, ``FAQs: Treasury Rollovers,'' May 2020.
+\url{https://www.newyorkfed.org/markets/treasury-rollover-faq-05062020}.
+
+\bibitem{auclert}
+Adrien Auclert, ``Monetary Policy and the Redistribution Channel,'' \emph{American Economic
+Review}, vol. 109, no. 6, 2019, pp. 2333--2367.
+\url{https://doi.org/10.1257/aer.20160137}.
+
+\bibitem{bisDebt2026}
+Bank for International Settlements, ``High Public Debt and Shifting Financial Markets:
+Challenges for Central Banks,'' \emph{Annual Economic Report 2026}, chapter 2.
+\url{https://www.bis.org/publ/arpdf/ar2026e2.htm}.
+
+\bibitem{dalioChangingOrder}
+Ray Dalio, \emph{The Changing World Order: The New Paradigm}, January 2022.
+\url{https://www.linkedin.com/pulse/changing-world-order-new-paradigm-ray-dalio}.
+
+\bibitem{dalioDebtCycle}
+Ray Dalio, \emph{How Countries Go Broke: Introduction \& Chapter One}, January 2025.
+\url{https://www.linkedin.com/pulse/how-countries-go-broke-introduction-chapter-one-ray-dalio-3wjae}.
+
+\bibitem{schiff}
+Peter D. Schiff and Andrew J. Schiff, \emph{How an Economy Grows and Why It Crashes},
+Wiley, 2010.  \url{https://www.wiley-vch.de/en/areas-interest/finance-economics-law/how-an-economy-grows-and-why-it-crashes-978-0-470-52670-5}.
+
+\end{thebibliography}
+
+\end{document}

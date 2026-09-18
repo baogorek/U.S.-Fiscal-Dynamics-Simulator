@@ -71,3 +71,28 @@ def test_tips_deflation_floor_applies_at_maturity(make_cohort, make_assumptions,
     assert row["tips_deflation_floor_cost_billions"] > 0
     assert row["principal_refinanced_billions"] == pytest.approx(100.0)
     assert row["debt_identity_residual_billions"] == pytest.approx(0.0, abs=1e-9)
+
+
+def test_negative_tips_real_yield_uses_zero_coupon_and_negative_effective_rate(
+    make_cohort,
+    make_assumptions,
+    run_small,
+):
+    stock = DebtStock([make_cohort(instrument_type=InstrumentType.NOTE)], 0.0)
+    result = run_small(
+        stock,
+        make_assumptions(
+            primary_deficit_billions=10.0,
+            tips_real_issuance_rate=-0.01,
+        ),
+    )
+    issued_tips = [
+        cohort
+        for cohort in result.ending_stock.cohorts
+        if cohort.instrument_type is InstrumentType.TIPS
+        and cohort.issued_since_scenario_start
+    ]
+
+    assert len(issued_tips) == 1
+    assert issued_tips[0].coupon_rate == pytest.approx(0.0)
+    assert issued_tips[0].effective_interest_rate == pytest.approx(-0.01)

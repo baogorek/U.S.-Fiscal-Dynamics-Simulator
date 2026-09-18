@@ -135,3 +135,20 @@ CBO supplies the economic series. No live API is called when the app or simulati
 
 The v0.1 validation remains deliberately restricted to the February 11 window through
 FY2036. Appending the February 25 extension does not rewrite that regression benchmark.
+
+## Sequential interest-recipient benchmark
+
+The experimental sequential slice approximates its 2026 interest-recipient shares from two
+official aggregates. CBO's pinned February 2026 data report $32.095 trillion of FY2026 debt
+held by the public and $4.540 trillion held by the Federal Reserve. Treasury's [June 2026
+Major Foreign Holders
+table](https://ticdata.treasury.gov/resource-center/data-chart-center/tic/Documents/slt_table5.html)
+reports $9.299 trillion of foreign holdings. Domestic private holdings are the residual,
+producing shares of 56.88 percent domestic private, 28.97 percent foreign, and 14.15 percent
+Federal Reserve.
+
+The timing and valuation conventions are not identical, and the aggregates do not identify
+beneficial owners security by security. The benchmark therefore improves the starting
+allocation without making the domestic or foreign spending fractions estimated parameters.
+The arithmetic and source metadata are pinned in
+`config/calibration/interest_recipient_shares_2026.json`.

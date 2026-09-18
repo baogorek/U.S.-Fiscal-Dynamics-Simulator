@@ -1,5 +1,20 @@
 # Baseline validation
 
+## September 2026 sustainability review
+
+The separate review experiment reproduces the 2056Q3 no-shock ratio of 172.7745%.
+Enabling the reference-relative debt-yield and central absorption rules without a shock
+leaves that economic path unchanged. Across the nine new macro runs, the largest absolute
+quarterly debt-identity residual is below `6e-11` billion dollars. The new debt-ratio
+decomposition separately reconciles primary deficits, interest, other financing, and
+nominal growth. Its final four-quarter baseline change is 3.1342 percentage points.
+
+Tests cover a stable permanent primary deficit, linear debt growth when interest equals
+growth, reconciliation of TIPS indexation and other financing, chronological input, and
+the distinction between gross rollover and increases in debt. These are accounting and
+implementation checks, not validation of the macro coefficients or crisis probabilities.
+Full results and assumptions are linked in [the review](sustainability_review.md).
+
 ## Setup
 
 The validation starts with Treasury's September 30, 2025 debt stock and runs quarterly

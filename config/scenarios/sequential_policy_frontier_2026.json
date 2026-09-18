@@ -1,0 +1,79 @@
+{
+  "central_benchmark_interest_demand_fraction": 0.15668784534991487,
+  "central_benchmark_spending_assumptions": {
+    "domestic_private_spending_fraction": 0.25,
+    "federal_reserve_spending_fraction": 0.0,
+    "foreign_domestic_spending_fraction": 0.05
+  },
+  "end": "2056Q3",
+  "experiment": "Finite-horizon inflation ceiling across Fed and interest responses",
+  "fed_inflation_responses": [
+    0.0,
+    0.5,
+    1.0,
+    1.5,
+    2.0,
+    2.5,
+    3.0,
+    4.0,
+    5.0,
+    6.0,
+    8.0,
+    12.0
+  ],
+  "feedback_rule": {
+    "automatic_stabilizer_semi_elasticity": 0.45,
+    "fiscal_effect_lag_quarters": 1,
+    "inflation_gap_lag_quarters": 2,
+    "inflation_output_gap_sensitivity": 0.06,
+    "inflation_persistence": 0.98,
+    "interest_income_output_multiplier": 1.0,
+    "output_gap_persistence": 0.8,
+    "policy_effect_lag_quarters": 2,
+    "policy_tightening_output_semi_elasticity": 0.25,
+    "primary_deficit_output_multiplier": 0.8,
+    "primary_deficit_scales_with_nominal_gdp": true,
+    "private_credit_spread_output_semi_elasticity": 0.15
+  },
+  "inflation_ceiling": 0.04,
+  "interest_income_domestic_demand_fractions": [
+    0.0,
+    0.05,
+    0.06,
+    0.07,
+    0.08,
+    0.09,
+    0.095,
+    0.1,
+    0.15,
+    0.15668784534991487,
+    0.2,
+    0.25,
+    0.325,
+    0.4
+  ],
+  "interest_recipient_share_calibration": "config/calibration/interest_recipient_shares_2026.json",
+  "private_credit_spread_basis_points": 200.0,
+  "private_credit_spread_quarters": 8,
+  "saved_path_demand_fractions": [
+    0.05,
+    0.08,
+    0.09,
+    0.095,
+    0.1,
+    0.15668784534991487
+  ],
+  "start": "2026Q4",
+  "sustained_breach_quarters": 4,
+  "terminal_debt_target_imposed": false,
+  "treasury_premium_basis_points": 500.0,
+  "treasury_premium_quarters": 40,
+  "warnings": [
+    "The grid is a conditional sensitivity frontier, not an estimated probability.",
+    "Interest spending fractions and Fed response coefficients are uncalibrated.",
+    "Strict defense means the simulated inflation path never exceeds four percent.",
+    "A strict defense applies only through 2056Q3; terminal trends are reported.",
+    "No Treasury investor-demand or auction-clearing condition is imposed.",
+    "The selected row minimizes peak policy rates only within the finite saved grid."
+  ]
+}

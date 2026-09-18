@@ -1,0 +1,25 @@
+{
+  "benchmark_date": "2026Q3",
+  "debt_held_by_public_billions": 32095.165,
+  "domestic_private_share": 0.5688049586285038,
+  "federal_reserve_holdings_billions": 4540.276,
+  "federal_reserve_share": 0.1414629275157177,
+  "foreign_holdings_billions": 9299.0,
+  "foreign_share": 0.2897321138557786,
+  "sources": {
+    "debt_and_federal_reserve_holdings": {
+      "description": "CBO February 2026 FY2026 debt held by the public and projected Federal Reserve holdings",
+      "local_snapshot": "data/raw/2026-08-22/cbo_ten_year_budget_2026-02.csv",
+      "url": "https://www.cbo.gov/publication/62105"
+    },
+    "foreign_holdings": {
+      "description": "Treasury TIC Major Foreign Holders table, June 2026 grand total",
+      "url": "https://ticdata.treasury.gov/resource-center/data-chart-center/tic/Documents/slt_table5.html"
+    }
+  },
+  "warnings": [
+    "The CBO debt totals and TIC foreign holdings do not use identical valuation and timing conventions.",
+    "Domestic private holdings are calculated as the residual.",
+    "The benchmark allocates aggregate interest and does not identify security-level beneficial owners."
+  ]
+}

@@ -155,6 +155,34 @@ class DebtStock:
             result[cohort.instrument_type] += cohort.principal_billions
         return result
 
+    def weighted_average_remaining_maturity_quarters(self, period: pd.Period) -> float:
+        """Return principal-weighted remaining maturity after the quarter's operations."""
+
+        marketable = self.marketable_debt_billions
+        if marketable <= 0:
+            return 0.0
+        weighted_quarters = sum(
+            cohort.principal_billions * max(cohort.maturity_period.ordinal - period.ordinal, 0)
+            for cohort in self.cohorts
+        )
+        return weighted_quarters / marketable
+
+    def principal_maturing_within_quarters(
+        self,
+        period: pd.Period,
+        horizon_quarters: int,
+    ) -> float:
+        """Return outstanding principal due after this quarter and within a horizon."""
+
+        if horizon_quarters < 1:
+            raise ValueError("maturity horizon must be positive")
+        horizon = period + horizon_quarters
+        return sum(
+            cohort.principal_billions
+            for cohort in self.cohorts
+            if period < cohort.maturity_period <= horizon
+        )
+
     def accrue_quarter(
         self,
         annual_tips_reference_inflation_rate: float,
@@ -254,7 +282,16 @@ class DebtStock:
             if principal <= 1e-12:
                 continue
             stated_rate = rates.for_type(instrument_type)
-            coupon_rate = 0.0 if instrument_type is InstrumentType.BILL else stated_rate
+            # Treasury does not issue a security with a negative stated coupon.
+            # A TIPS auction can nevertheless clear at a negative real yield;
+            # represent that result as a zero coupon plus a negative effective
+            # rate (an issue-price premium) in the cohort ledger.
+            if instrument_type is InstrumentType.TIPS:
+                coupon_rate = max(stated_rate, 0.0)
+            elif instrument_type is InstrumentType.BILL:
+                coupon_rate = 0.0
+            else:
+                coupon_rate = stated_rate
             frn_spread = rates.new_frn_spread if instrument_type is InstrumentType.FRN else 0.0
             self._issuance_sequence += 1
             cohort = TreasuryCohort(
@@ -316,6 +353,45 @@ class DebtStock:
         retired = amount_billions - remaining
         if remaining > 1e-9:
             raise ValueError("financing surplus exceeds all debt held by the public")
+        return retired
+
+    def retire_cohort_principal(self, reductions_billions: Mapping[str, float]) -> float:
+        """Retire specified marketable principal without choosing other cohorts.
+
+        This lower-level operation supports explicit Treasury buybacks. Selection
+        and market-value pricing remain outside the debt ledger.
+        """
+
+        unknown = set(reductions_billions) - {cohort.cohort_id for cohort in self.cohorts}
+        if unknown:
+            raise ValueError(f"cannot retire unknown cohort ids: {sorted(unknown)}")
+        if any(float(amount) < 0 for amount in reductions_billions.values()):
+            raise ValueError("cohort principal reductions cannot be negative")
+
+        retired = 0.0
+        updated: list[TreasuryCohort] = []
+        for cohort in self.cohorts:
+            reduction = float(reductions_billions.get(cohort.cohort_id, 0.0))
+            if reduction > cohort.principal_billions + 1e-12:
+                raise ValueError(
+                    f"principal reduction exceeds outstanding amount for {cohort.cohort_id}"
+                )
+            reduction = min(reduction, cohort.principal_billions)
+            retired += reduction
+            balance = cohort.principal_billions - reduction
+            if balance <= 1e-12:
+                continue
+            original = cohort.original_principal_billions
+            if original is not None:
+                original = max(original - reduction, 0.0)
+            updated.append(
+                replace(
+                    cohort,
+                    principal_billions=balance,
+                    original_principal_billions=original,
+                )
+            )
+        self.cohorts = updated
         return retired
 
     def average_effective_rate_excluding_tips_inflation(self) -> float:
